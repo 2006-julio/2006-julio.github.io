@@ -1,0 +1,194 @@
+/* Fondo */
+body {
+    background: radial-gradient(circle at top, #0f2027, #000000);
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+}
+
+/* Títulos */
+.titulo {
+    color: #00eaff;
+    text-shadow: 0 0 10px #00eaff;
+}
+/* Contenedor principal */
+.flip-card {
+    perspective: 1000px;
+}
+
+/* Parte interna */
+.flip-inner {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+
+/* Animación al pasar el mouse */
+.flip-card:hover .flip-inner {
+    transform: rotateY(180deg);
+}
+
+/* Cara frontal y trasera */
+.flip-front, .flip-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    backface-visibility: hidden;
+}
+
+/* Frente (imagen) */
+.flip-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Parte trasera */
+.flip-back {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    text-align: center;
+}
+
+.titulo-principal {
+    color: #ffffff;
+    text-shadow: 0 0 15px #00eaff, 0 0 25px #007bff;
+}
+
+/* Botón rayo */
+.btn-rayo {
+    background: linear-gradient(45deg, #007bff, #00eaff);
+    border: none;
+    color: white;
+    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.btn-rayo::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+    transition: 0.5s;
+}
+
+.btn-rayo:hover::before {
+    left: 100%;
+}
+
+.btn-rayo:hover {
+    box-shadow: 0 0 15px #00eaff, 0 0 30px #007bff;
+    transform: scale(1.05);
+}
+
+/* Tarjetas */
+.grado-card {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 15px;
+    color: white;
+    background: rgba(0, 0, 0, 0.6);
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+    backdrop-filter: blur(8px);
+}
+
+/* Borde animado */
+.grado-card::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 15px;
+    background: linear-gradient(45deg, #00f0ff, #007bff, #00f0ff);
+    z-index: -1;
+    animation: bordeAnimado 3s linear infinite;
+}
+
+@keyframes bordeAnimado {
+    0% { opacity: 0.6; filter: blur(4px); }
+    50% { opacity: 1; filter: blur(8px); }
+    100% { opacity: 0.6; filter: blur(4px); }
+}
+
+/* Hover tarjetas */
+.grado-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #00eaff, 0 0 40px #007bff;
+}
+
+/* Colores por grado */
+.g1 { background: linear-gradient(135deg, #1e3c72, #2a5298); }
+.g2 { background: linear-gradient(135deg, #42275a, #734b6d); }
+.g3 { background: linear-gradient(135deg, #134e5e, #71b280); }
+.g4 { background: linear-gradient(135deg, #355c7d, #6c5b7b); }
+.g5 { background: linear-gradient(135deg, #2c3e50, #4ca1af); }
+.g6 { background: linear-gradient(135deg, #0f2027, #2c5364); }
+
+
+/* Tarjetas de texto */
+.card-texto {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 30px;
+    backdrop-filter: blur(6px);
+    color: white;
+    max-width: 1500px;
+    margin: auto;
+}
+
+/* Texto dentro */
+.card-texto p {
+    color: #e0e0e0;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+/* Sección footer tipo bloque */
+.footer-seccion {
+    background: #0a0f1c;
+    border-top: 2px solid #00eaff;
+    box-shadow: 0 -5px 20px rgba(0, 234, 255, 0.2);
+}
+
+/* Títulos del footer */
+.footer-seccion h5 {
+    color: #00eaff;
+    margin-bottom: 10px;
+}
+
+/* Texto */
+.footer-seccion p {
+    color: #ccc;
+    margin: 0;
+}
+
+/* Línea separadora */
+.footer-seccion hr {
+    border-color: rgba(255,255,255,0.1);
+}
