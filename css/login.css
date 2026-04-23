@@ -1,7 +1,10 @@
 /* Fondo general */
 body {
-    background: radial-gradient(circle at top, #0f2027, #000000);
+    background: url("../imgP/ingles.jpg") center/cover no-repeat fixed;
     font-family: 'Segoe UI', sans-serif;
+    color: #333;
+    margin: 0;
+    position: relative;
 }
 
 /* Caja login */
@@ -44,7 +47,7 @@ body {
 /* Inputs */
 .input-custom {
     background: transparent;
-    border: 1px solid #00c3ff;
+    border: 1px solid #42b9c9;
     color: white;
 }
 
@@ -61,7 +64,7 @@ body {
 
 /* Botón rayo */
 .btn-rayo {
-    background: linear-gradient(45deg, #007bff, #00eaff);
+    background: linear-gradient(45deg, #ff0808, #e95353);
     border: none;
     color: white;
     font-weight: bold;
@@ -96,4 +99,44 @@ body {
 /* Labels */
 .form-label {
     color: #ccc;
+}
+
+
+/* Overlay que se sobrepone al login*/
+.overlay-mantenimiento {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+
+    background: rgba(241, 50, 50, 0.7); /* oscurece todo */
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999; /* MUY IMPORTANTE: encima de todo */
+}
+
+/* caja del mensaje */
+.mensaje {
+    background: rgba(255, 12, 12, 0.6); /* negro transparente */
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(89, 13, 230, 0.3);
+    animation: pop 0.4s ease;
+}
+
+/* animación entrada */
+@keyframes pop {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }

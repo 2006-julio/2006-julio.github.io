@@ -1,9 +1,12 @@
 /* Fondo */
 body {
-    margin: 0;
+    background-image: url("../imgP/ingles.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     font-family: 'Segoe UI', sans-serif;
-    background: radial-gradient(circle at top, #0f2027, #000000);
-    color: white;
+    color: #222; /* texto oscuro para mejor lectura */
+    margin: 0;
 }
 
 /* Header */
@@ -12,28 +15,30 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
-    background: rgba(0,0,0,0.6);
-    box-shadow: 0 0 15px #00eaff;
+    background: rgba(255,255,255,0.85); /* antes oscuro */
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
 .header h1 {
     margin: 0;
-    color: #00eaff;
-    text-shadow: 0 0 10px #00eaff;
+    color: #6a1b9a; /* morado */
+    text-shadow: 2px 2px 0 #ffffff;
 }
 
 /* Botón volver */
 .btn-volver {
     text-decoration: none;
     padding: 8px 15px;
-    border-radius: 8px;
-    background: linear-gradient(45deg, #007bff, #00eaff);
-    color: white;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #ff9800, #ffeb3b);
+    color: #333;
+    font-weight: bold;
     transition: 0.3s;
 }
 
 .btn-volver:hover {
-    box-shadow: 0 0 10px #00eaff;
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 /* Contenedor */
@@ -44,7 +49,12 @@ body {
 /* Título */
 .titulo-seccion {
     margin-bottom: 20px;
-    text-shadow: 0 0 10px #00eaff;
+    color: #6a1b9a;
+    text-shadow: 2px 2px 0 #ffffff;
+    background: rgba(255,255,255,0.7);
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 10px;
 }
 
 /* GRID contenido */
@@ -56,7 +66,7 @@ body {
 
 /* Tarjetas dinámicas */
 .card-contenido {
-    background: rgba(0,0,0,0.7);
+    background: rgba(255,255,255,0.9); /* claro */
     border-radius: 15px;
     padding: 15px;
     position: relative;
@@ -64,13 +74,13 @@ body {
     transition: 0.3s;
 }
 
-/* Borde animado */
+/* Borde animado (manteniendo tu estilo) */
 .card-contenido::before {
     content: "";
     position: absolute;
     inset: -2px;
     border-radius: 15px;
-    background: linear-gradient(45deg, #00f0ff, #007bff, #00f0ff);
+    background: linear-gradient(45deg, #00c3ff, #7b1fa2, #00c3ff);
     z-index: -1;
     animation: glow 3s infinite linear;
 }
@@ -81,9 +91,10 @@ body {
     100% { opacity: 0.5; }
 }
 
+/* Hover */
 .card-contenido:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 20px #00eaff;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
 }
 
 /* Imágenes */
@@ -102,5 +113,64 @@ body {
 /* Texto */
 .card-contenido p {
     margin-top: 10px;
-    color: #ccc;
+    color: #333; /* antes muy claro */
+}
+/* 🔵 Contenedores de filas */
+.fila {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+/* 🧱 Tarjetas (videos e imágenes) */
+.card {
+    min-width: 250px;
+    background: rgba(46, 136, 148, 0.6); /* negro transparente */
+    color: rgb(255, 0, 0);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+
+    /* efecto vidrio moderno */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    /* animación suave */
+    transition: transform 0.2s ease;
+}
+
+/* hover (efecto zoom suave) */
+.card:hover {
+    transform: scale(1.05);
+}
+
+/* iframe y imágenes */
+.card iframe,
+.card img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+    background: white;
+}
+
+.card img:hover {
+    transform: scale(1.05);
+}
+
+/* texto dentro de tarjetas */
+.card p {
+    margin-top: 8px;
+    color: white;
+}
+
+/* bloque de texto separado */
+.bloque-texto {
+    padding: 15px;
+    background: rgba(46, 136, 148, 0.6);
+    color: white;
+    border-radius: 12px;
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 }

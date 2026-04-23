@@ -1,7 +1,7 @@
 const contenidop = [
     {
         tipo: "video",
-        src: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        src: "https://youtu.be/B-BnUl1IK9I",
         titulo: "Video educativo"
     },
     {

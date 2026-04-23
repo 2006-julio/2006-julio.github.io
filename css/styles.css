@@ -1,21 +1,50 @@
-/* Fondo */
+/* Fondo con imagen (sin cambios fuertes) */
 body {
-    background: radial-gradient(circle at top, #0f2027, #000000);
+    background: url("../imgP/ingles.jpg") center/cover no-repeat fixed;
     font-family: 'Segoe UI', sans-serif;
-    color: white;
+    color: #333;
+    margin: 0;
+    position: relative;
 }
 
-/* Títulos */
-.titulo {
-    color: #00eaff;
-    text-shadow: 0 0 10px #00eaff;
+/* Overlay muy suave (mínimo, no oscurece) */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.12);
+    z-index: -1;
 }
-/* Contenedor principal */
+
+/* 🔵 TÍTULOS CENTRADOS CON BLOQUE BLANCO TRANSPARENTE */
+.titulo,
+.titulo-principal {
+    display: block;
+    width: fit-content;
+    margin: 20px auto; /* centra horizontalmente */
+    padding: 8px 18px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(3px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Colores de títulos */
+.titulo {
+    color: #ff4d6d;
+    text-shadow: 1px 1px 0 #ffffff;
+}
+
+.titulo-principal {
+    color: #ff9800;
+    text-shadow: 1px 1px 0 #ffffff;
+}
+
+/* Flip card (sin cambios en transparencia) */
 .flip-card {
     perspective: 1000px;
 }
 
-/* Parte interna */
 .flip-inner {
     position: relative;
     width: 100%;
@@ -24,33 +53,28 @@ body {
     transform-style: preserve-3d;
 }
 
-
-/* Animación al pasar el mouse */
 .flip-card:hover .flip-inner {
     transform: rotateY(180deg);
 }
 
-/* Cara frontal y trasera */
 .flip-front, .flip-back {
     position: absolute;
     width: 100%;
     height: 100%;
-    border-radius: 15px;
+    border-radius: 20px;
     overflow: hidden;
     backface-visibility: hidden;
 }
 
-/* Frente (imagen) */
 .flip-front img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-/* Parte trasera */
 .flip-back {
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
     transform: rotateY(180deg);
     display: flex;
     flex-direction: column;
@@ -58,137 +82,133 @@ body {
     align-items: center;
     padding: 15px;
     text-align: center;
+    border: 3px solid #ffcc00;
 }
 
-.titulo-principal {
-    color: #ffffff;
-    text-shadow: 0 0 15px #00eaff, 0 0 25px #007bff;
-}
-
-/* Botón rayo */
+/* Botón */
 .btn-rayo {
-    background: linear-gradient(45deg, #007bff, #00eaff);
+    background: linear-gradient(45deg, #ff9800, #ffeb3b);
     border: none;
-    color: white;
+    color: #333;
     font-weight: bold;
-    position: relative;
-    overflow: hidden;
+    border-radius: 10px;
     transition: 0.3s;
 }
 
-.btn-rayo::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
-    transition: 0.5s;
-}
-
-.btn-rayo:hover::before {
-    left: 100%;
-}
-
 .btn-rayo:hover {
-    box-shadow: 0 0 15px #00eaff, 0 0 30px #007bff;
-    transform: scale(1.05);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px #ff9800;
 }
 
-/* Tarjetas */
+/* Tarjetas de grados */
 .grado-card {
     height: 120px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: bold;
-    border-radius: 15px;
+    border-radius: 20px;
     color: white;
-    background: rgba(0, 0, 0, 0.6);
-    position: relative;
-    overflow: hidden;
     transition: 0.3s;
-    backdrop-filter: blur(8px);
 }
 
-/* Borde animado */
-.grado-card::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 15px;
-    background: linear-gradient(45deg, #00f0ff, #007bff, #00f0ff);
-    z-index: -1;
-    animation: bordeAnimado 3s linear infinite;
-}
+/* Colores vivos */
+.g1 { background: #ff3b30; }
+.g2 { background: #ff9500; }
+.g3 { background: #00c7ff; }
+.g4 { background: #34c759; }
+.g5 { background: #af52de; }
+.g6 { background: #007aff; }
 
-@keyframes bordeAnimado {
-    0% { opacity: 0.6; filter: blur(4px); }
-    50% { opacity: 1; filter: blur(8px); }
-    100% { opacity: 0.6; filter: blur(4px); }
-}
-
-/* Hover tarjetas */
 .grado-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px #00eaff, 0 0 40px #007bff;
+    transform: scale(1.1) rotate(-2deg);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* Colores por grado */
-.g1 { background: linear-gradient(135deg, #1e3c72, #2a5298); }
-.g2 { background: linear-gradient(135deg, #42275a, #734b6d); }
-.g3 { background: linear-gradient(135deg, #134e5e, #71b280); }
-.g4 { background: linear-gradient(135deg, #355c7d, #6c5b7b); }
-.g5 { background: linear-gradient(135deg, #2c3e50, #4ca1af); }
-.g6 { background: linear-gradient(135deg, #0f2027, #2c5364); }
-
-
-/* Tarjetas de texto */
+/* 🔵 TARJETAS DE TEXTO */
 .card-texto {
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 30px;
-    backdrop-filter: blur(6px);
-    color: white;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 25px;
+    color: #333;
     max-width: 1500px;
     margin: auto;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* Texto dentro */
+/* Texto dentro de tarjetas */
 .card-texto p {
-    color: #e0e0e0;
+    color: #222;
     line-height: 1.6;
     text-align: justify;
+    font-weight: 500;
 }
 
-/* Footer */
+/* 🔵 FOOTER */
 .footer {
     text-align: center;
     padding: 20px;
-    color: #aaa;
+    color: #555;
     font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(4px);
+    border-top: 2px solid rgba(255, 152, 0, 0.4);
 }
-/* Sección footer tipo bloque */
+
+/* Footer sección */
 .footer-seccion {
-    background: #0a0f1c;
-    border-top: 2px solid #00eaff;
-    box-shadow: 0 -5px 20px rgba(0, 234, 255, 0.2);
+    background: rgba(255, 243, 224, 0.75);
+    border-top: 3px solid #ff9800;
 }
 
-/* Títulos del footer */
 .footer-seccion h5 {
-    color: #00eaff;
-    margin-bottom: 10px;
+    color: #ff5722;
 }
 
-/* Texto */
 .footer-seccion p {
-    color: #ccc;
-    margin: 0;
+    color: #555;
+}
+/*Boton de whatsap*/
+.whatsapp-float {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 20px;
+  right: 20px;
+  background-color: #25D366;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 1000;
+
+  /* animación */
+  animation: pulse 1.5s infinite;
 }
 
-/* Línea separadora */
-.footer-seccion hr {
-    border-color: rgba(255,255,255,0.1);
+/* cuando pasas el mouse se detiene */
+.whatsapp-float:hover {
+  animation: none;
+  transform: scale(1.1);
+}
+
+/* animación pulse */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
 }
