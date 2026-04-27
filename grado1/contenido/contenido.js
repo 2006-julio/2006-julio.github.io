@@ -53,6 +53,11 @@ const contenido = [
         tipo: "texto",
         texto: "sin informacion de clases de ingles"
     },
+    {
+        tipo:"imagen",
+        src:"https://drive.google.com/file/d/1vqQFabyrkOoX2jSlXQCjdfVpeSR17gKC/view?usp=drive_link",
+        titulo:"google drive"
+    },
 ];
 
 // 🔥 convertidor YouTube
