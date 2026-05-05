@@ -53,6 +53,11 @@ const contenido = [
         tipo: "texto",
         texto: "sin informacion de clases de ingles"
     },
+    {
+    tipo: "audio",
+    src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    titulo: "Audio de ejemplo"
+    }
 ];
 
 // 🔥 convertidor YouTube
@@ -75,6 +80,7 @@ function convertirYoutube(url) {
 const contVideos = document.getElementById("videos");
 const contImagenes = document.getElementById("imagenes");
 const contTextos = document.getElementById("textos");
+const contAudios = document.getElementById("audios");
 
 
 // 🚀 render
@@ -83,6 +89,7 @@ function renderContenido() {
     contVideos.innerHTML = "";
     contImagenes.innerHTML = "";
     contTextos.innerHTML = "";
+    contAudios.innerHTML = "";
 
     contenido.forEach(item => {
 
@@ -111,6 +118,18 @@ function renderContenido() {
             contTextos.innerHTML += `
                 <div class="texto">
                     <p>${item.texto}</p>
+                </div>
+            `;
+        }
+        // 🔊 AUDIOS
+        if (item.tipo === "audio") {
+            contAudios.innerHTML += `
+                <div class="card">
+                    <audio controls>
+                        <source src="${item.src}" type="audio/mpeg">
+                        Tu navegador no soporta audio.
+                    </audio>
+                    <p>${item.titulo}</p>
                 </div>
             `;
         }
