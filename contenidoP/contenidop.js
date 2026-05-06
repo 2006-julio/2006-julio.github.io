@@ -24,7 +24,7 @@ const contenidop = [
     {
         tipo: "texto",
         texto: "Este es un contenido de ejemplo para primer grado."
-    }
+    },
 ];
 
 const contenedor = document.getElementById("contenedor-contenido");
@@ -52,4 +52,6 @@ contenido.forEach(item => {
     }
 
     contenedor.appendChild(card);
-});
+}
+
+);

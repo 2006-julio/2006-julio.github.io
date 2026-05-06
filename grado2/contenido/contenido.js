@@ -7,8 +7,19 @@ const contenido = [
     {
         tipo: "video",
         src: "https://youtu.be/jrIBc2sbm6M",
-        titulo: "Padre Nuestro en inglés"
+        titulo: "Padre Nuestro de lento a rapido"
     },
+    {
+        tipo:"video",
+        src:"https://youtube.com/watch?v=AS5nhKzaOqo",
+        titulo:"School Supplies Vocabulary"
+    },
+    {
+        tipo:"video",
+        src:"https://youtu.be/5a-P8VfTw4s",
+        titulo:"The Lord's Prayer"
+    },
+
     {
         tipo: "video",
         src: "https://youtu.be/B-BnUl1IK9I",
@@ -20,14 +31,14 @@ const contenido = [
         titulo: "Good Morning"
     },
     {
-        tipo: "video",
-        src: "https://youtu.be/nnB0sYRNzEw",
-        titulo: "Good Morning"
-    },
-    {
         tipo:"video",
         src:"https://youtu.be/vXXiyIGqliE?list=PLuA75Ir_S2pVePY1LjQpdsPxPIEOJzkZo",
         titulo:"Body Parts Song"
+    },
+    {
+        tipo:"video",
+        src:"https://www.youtube.com/watch?v=zxIpA5nF_LY",
+        titulo:"What's Your Favorite Color?"
     },
     {
         tipo:"imagen",
