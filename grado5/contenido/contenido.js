@@ -20,11 +20,6 @@ const contenido = [
         titulo:"Números canción 1 a 20"
     },
     {
-        tipo:"audio",
-        src:"../audios/presentacion.mp3",
-        titulo:"Presentacion"
-    },
-    {
         tipo:"imagen",
         src:"https://english4kidsonline.com/wp-content/uploads/2023/01/los-pronombres-en-ingles-768x480.jpg",  
         titulo:"web"
@@ -34,10 +29,10 @@ const contenido = [
         texto: "sin informacion de clases de ingles"
     },
     {
-    tipo: "audio",
-    src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-    titulo: "Audio de ejemplo"
-    }
+        tipo:"audio",
+        src:"./audios/presentacion.mp3",
+        titulo:"Presentacion"
+    },
 ];
 
 //convertidor YouTube
