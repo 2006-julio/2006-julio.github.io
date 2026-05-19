@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Ordena la Palabra</title>
+
+  <link rel="stylesheet" href="order.css">
+</head>
+<body>
+
+  <a href="../../games.html" class="back-btn">⬅ Volver</a>
+
+  <div class="container">
+
+    <h1>🔤 Ordena la Palabra</h1>
+
+    <p class="instruction">
+      Ordena las letras para formar la palabra correcta en inglés
+    </p>
+
+    <div class="game-box">
+
+      <h2 id="scrambled-word">LOADING</h2>
+
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Escribe la palabra"
+      >
+
+      <button id="check-btn">
+        Verificar
+      </button>
+
+      <p id="result"></p>
+
+      <p class="score">
+        Puntaje:
+        <span id="score">0</span>
+      </p>
+
+    </div>
+
+  </div>
+
+  <script src="order.js"></script>
+</body>
+</html>

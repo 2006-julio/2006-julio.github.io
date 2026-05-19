@@ -1,0 +1,215 @@
+/* Fondo con imagen (sin cambios fuertes) */
+body {
+    background: url("/principal/img/fondo_principal.jpg") center/cover no-repeat fixed;
+    font-family: 'Segoe UI', sans-serif;
+    color: #333;
+    margin: 0;
+    position: relative;
+}
+
+/* Overlay muy suave (mínimo, no oscurece) */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.12);
+    z-index: -1;
+}
+
+/* 🔵 TÍTULOS CENTRADOS CON BLOQUE BLANCO TRANSPARENTE */
+.titulo,
+.titulo-principal {
+    display: block;
+    width: fit-content;
+    margin: 20px auto; /* centra horizontalmente */
+    padding: 8px 18px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(3px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Colores de títulos */
+.titulo {
+    color: #ff4d6d;
+    text-shadow: 1px 1px 0 #ffffff;
+}
+
+.titulo-principal {
+    color: #ff9800;
+    text-shadow: 1px 1px 0 #ffffff;
+}
+
+/* Flip card (sin cambios en transparencia) */
+.flip-card {
+    perspective: 1000px;
+}
+
+.flip-inner {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-front, .flip-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    backface-visibility: hidden;
+}
+
+.flip-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.flip-back {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    text-align: center;
+    border: 3px solid #ffcc00;
+}
+
+/* Botón */
+.btn-rayo {
+    background: linear-gradient(45deg, #ff9800, #ffeb3b);
+    border: none;
+    color: #333;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.btn-rayo:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px #ff9800;
+}
+
+/* Tarjetas de grados */
+.grado-card {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-radius: 20px;
+    color: white;
+    transition: 0.3s;
+}
+
+/* Colores vivos */
+.g1 { background: #ff3b30; }
+.g2 { background: #ff9500; }
+.g3 { background: #00c7ff; }
+.g4 { background: #34c759; }
+.g5 { background: #af52de; }
+.g6 { background: #007aff; }
+.g7 { background: #000000;}
+
+.grado-card:hover {
+    transform: scale(1.1) rotate(-2deg);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* 🔵 TARJETAS DE TEXTO */
+.card-texto {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 25px;
+    color: #333;
+    max-width: 1500px;
+    margin: auto;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Texto dentro de tarjetas */
+.card-texto p {
+    color: #222;
+    line-height: 1.6;
+    text-align: justify;
+    font-weight: 500;
+}
+
+/* 🔵 FOOTER */
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: #555;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(4px);
+    border-top: 2px solid rgba(255, 152, 0, 0.4);
+}
+
+/* Footer sección */
+.footer-seccion {
+    background: rgba(255, 243, 224, 0.75);
+    border-top: 3px solid #ff9800;
+}
+
+.footer-seccion h5 {
+    color: #ff5722;
+}
+
+.footer-seccion p {
+    color: #555;
+}
+/*Boton de whatsap*/
+.whatsapp-float {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 20px;
+  right: 20px;
+  background-color: #25D366;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 1000;
+
+  /* animación */
+  animation: pulse 1.5s infinite;
+}
+
+/* cuando pasas el mouse se detiene */
+.whatsapp-float:hover {
+  animation: none;
+  transform: scale(1.1);
+}
+
+/* animación pulse */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}

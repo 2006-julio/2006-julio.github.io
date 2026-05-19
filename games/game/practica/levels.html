@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Listening Levels</title>
+
+  <link rel="stylesheet" href="levels.css">
+</head>
+<body>
+
+  <a href="../../games.html" class="back-btn">⬅ Volver</a>
+
+  <div class="container">
+
+    <h1>🎧 English Listening Game</h1>
+
+    <div class="level-buttons">
+      <button onclick="setLevel('easy')">🟢 Fácil</button>
+      <button onclick="setLevel('medium')">🟡 Medio</button>
+      <button onclick="setLevel('hard')">🔴 Difícil</button>
+    </div>
+
+    <div class="game-box">
+
+      <button id="playBtn">🔊 Escuchar</button>
+
+      <!-- EASY -->
+      <div id="easyMode" class="mode">
+        <input type="text" id="textAnswer" placeholder="Escribe la palabra">
+        <button onclick="checkEasy()">Verificar</button>
+      </div>
+
+      <!-- MEDIUM -->
+      <div id="mediumMode" class="mode hidden">
+        <div class="options">
+          <button class="option-btn"></button>
+          <button class="option-btn"></button>
+          <button class="option-btn"></button>
+          <button class="option-btn"></button>
+        </div>
+      </div>
+
+      <!-- HARD -->
+      <div id="hardMode" class="mode hidden">
+        <button id="micBtn">🎤 Hablar</button>
+        <p id="speechText"></p>
+      </div>
+
+      <p id="result"></p>
+
+    </div>
+
+  </div>
+
+  <script src="levels.js"></script>
+</body>
+</html>

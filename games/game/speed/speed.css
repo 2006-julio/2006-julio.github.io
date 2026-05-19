@@ -1,0 +1,112 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background: url("/principal/img/game.jpg");
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+}
+
+.container{
+  width:90%;
+  max-width:700px;
+  text-align:center;
+}
+
+h1{
+  font-size:2.8rem;
+  margin-bottom:10px;
+}
+
+.subtitle{
+  margin-bottom:25px;
+  opacity:0.8;
+}
+
+.game-box{
+  background:rgba(255,255,255,0.1);
+  padding:35px;
+  border-radius:20px;
+  backdrop-filter:blur(8px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.3);
+}
+
+.top-info{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:25px;
+  font-size:1.2rem;
+}
+
+#question{
+  margin-bottom:25px;
+  font-size:2rem;
+}
+
+.options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.option-btn{
+  padding:15px;
+  border:none;
+  border-radius:12px;
+  background:white;
+  color:#243b55;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.option-btn:hover{
+  transform:scale(1.05);
+  background:#ffd166;
+}
+
+.correct{
+  background:#06d6a0 !important;
+  color:white;
+}
+
+.wrong{
+  background:#ef476f !important;
+  color:white;
+}
+
+#result{
+  margin-top:20px;
+  font-size:1.2rem;
+  font-weight:bold;
+}
+
+.back-btn{
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: 0.3s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.back-btn:hover{
+  background: white;
+  color: #243b55;
+  transform: scale(1.05);
+}

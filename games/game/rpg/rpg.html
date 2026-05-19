@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Quest RPG Pro</title>
+  <link rel="stylesheet" href="rpg.css" />
+</head>
+<body>
+
+  <header id="hud">
+    <div class="glass panel hud-panel">
+      <div class="hud-title">
+        <h1>English Quest</h1>
+        <p>Aprende inglés explorando y hablando con NPCs</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <span>XP</span>
+          <strong id="xpText">0</strong>
+        </div>
+        <div class="stat">
+          <span>Nivel</span>
+          <strong id="levelText">1</strong>
+        </div>
+        <div class="stat">
+          <span>Objetos</span>
+          <strong id="itemCountText">0</strong>
+        </div>
+        <div class="stat">
+          <span>Misiones</span>
+          <strong id="questCountText">0/0</strong>
+        </div>
+      </div>
+
+      <div class="xp-bar">
+        <div id="xpBarFill"></div>
+      </div>
+
+      <p class="control-hint">WASD / Flechas para moverte · E para hablar · I para inventario</p>
+
+      <div class="hud-actions">
+        <button id="inventoryBtn" class="btn secondary">Inventario</button>
+        <button id="saveBtn" class="btn secondary">Guardar</button>
+        <button id="resetBtn" class="btn danger">Reiniciar</button>
+      </div>
+    </div>
+  </header>
+
+  <aside id="questPanel" class="glass panel">
+    <div class="panel-head">
+      <h2>Misiones</h2>
+      <span id="questProgressMini">0/0</span>
+    </div>
+    <ul id="questList"></ul>
+  </aside>
+
+  <div id="hintBox" class="glass panel hint-box">Explora el mapa y busca NPCs.</div>
+
+  <main id="viewport">
+    <div id="world">
+      <div id="player" class="avatar player" style="left:180px; top:220px; --skin:#f1c9a5; --shirt:#22c55e; --pants:#2563eb; --hair:#1f2937;">
+        <div class="avatar-label"></div>
+        <div class="avatar-badge"></div>
+        <div class="hair"></div>
+        <div class="head"></div>
+        <div class="body"></div>
+        <div class="arm left"></div>
+        <div class="arm right"></div>
+        <div class="leg left"></div>
+        <div class="leg right"></div>
+      </div>
+
+      <div id="entities"></div>
+    </div>
+  </main>
+
+  <div id="dialogOverlay" class="overlay hidden">
+    <div class="glass panel dialog-panel">
+      <div class="panel-head">
+        <div>
+          <h2 id="dialogTitle">Diálogo</h2>
+          <p id="dialogMeta" class="dialog-meta"></p>
+        </div>
+        <button id="closeDialogBtn" class="icon-btn" aria-label="Cerrar diálogo">✕</button>
+      </div>
+
+      <p id="dialogPrompt" class="dialog-prompt"></p>
+
+      <div class="dialog-tools">
+        <button id="speakBtn" class="btn secondary">🔊 Escuchar</button>
+      </div>
+
+      <div id="dialogOptions" class="dialog-options"></div>
+      <p id="dialogFeedback" class="dialog-feedback"></p>
+    </div>
+  </div>
+
+  <aside id="inventoryPanel" class="glass panel side-panel">
+    <div class="panel-head">
+      <h2>Inventario</h2>
+      <button id="closeInventoryBtn" class="icon-btn" aria-label="Cerrar inventario">✕</button>
+    </div>
+    <div id="inventoryList" class="inventory-list"></div>
+  </aside>
+
+  <div id="victoryOverlay" class="overlay hidden">
+    <div class="glass panel victory-panel">
+      <h2>🎉 ¡Has terminado todas las misiones!</h2>
+      <p id="victoryText"></p>
+      <div class="victory-actions">
+        <button id="restartBtn" class="btn primary">Jugar otra vez</button>
+        <button id="closeVictoryBtn" class="btn secondary">Seguir explorando</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <div id="mobileControls" aria-label="Controles táctiles">
+    <div class="pad-row">
+      <button class="pad-btn" data-dir="up">▲</button>
+    </div>
+    <div class="pad-row middle-row">
+      <button class="pad-btn" data-dir="left">◀</button>
+      <button id="interactBtn" class="pad-btn action-btn">E</button>
+      <button class="pad-btn" data-dir="right">▶</button>
+    </div>
+    <div class="pad-row">
+      <button class="pad-btn" data-dir="down">▼</button>
+    </div>
+  </div>
+
+  <script src="rpg.js"></script>
+</body>
+</html>
