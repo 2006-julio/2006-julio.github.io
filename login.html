@@ -4,45 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login Administrador</title>
+<link rel="stylesheet" href="principal/login.css">
 </head>
+
 <body>
 
 <h2>Iniciar Sesión</h2>
 
-<input
-    type="email"
-    id="correo"
-    placeholder="Correo">
+<div class="container">
 
-<br><br>
+    <input type="email" id="correo" placeholder="Correo">
 
-<input
-    type="password"
-    id="password"
-    placeholder="Contraseña">
+    <input type="password" id="password" placeholder="Contraseña">
 
-<br><br>
+    <button id="btnLogin">Ingresar</button>
 
-<button id="btnLogin">
-    Ingresar
-</button>
+    <p id="mensaje"></p>
 
-<p id="mensaje"></p>
+</div>
 
 <script type="module">
 
 import { auth } from "./config-firebase.js";
 
-import {
-    signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+import { signInWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 const correo = document.getElementById("correo");
 const password = document.getElementById("password");
 const mensaje = document.getElementById("mensaje");
 
-document.getElementById("btnLogin")
-.addEventListener("click", async () => {
+document.getElementById("btnLogin").addEventListener("click", async () => {
 
     try {
 
@@ -52,14 +44,11 @@ document.getElementById("btnLogin")
             password.value
         );
 
-        window.location.href =
-            "admin.html";
+        window.location.href = "admin.html";
 
-    } catch(error) {
+    } catch (error) {
 
-        mensaje.textContent =
-            error.message;
-
+        mensaje.textContent = error.message;
         console.error(error);
 
     }

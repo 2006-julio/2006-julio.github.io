@@ -1,0 +1,95 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #222;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+#btnLogout {
+    display: block;
+    margin: 0 auto 20px auto;
+    background: #dc3545;
+}
+
+#btnLogout:hover {
+    background: #a71d2a;
+}
+
+select, input {
+    display: block;
+    width: 300px;
+    max-width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+}
+
+select:focus, input:focus {
+    border-color: #007bff;
+}
+
+#btnGuardar {
+    display: block;
+    margin: 15px auto;
+}
+
+#resultado {
+    text-align: center;
+    font-weight: bold;
+    margin: 10px 0;
+    color: green;
+}
+
+#listaContenido {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+#listaContenido div {
+    background: white;
+    border-radius: 10px;
+    width: 250px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 15px;
+    transition: transform 0.2s;
+}
+
+#listaContenido div:hover {
+    transform: scale(1.03);
+}
+
+img, iframe, audio {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+p {
+    font-size: 14px;
+    line-height: 1.4;
+}
