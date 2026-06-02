@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Panel Administrador</title>
+</head>
+<body>
+
+<h1>Panel Administrador</h1>
+
+<button id="btnLogout">
+    Cerrar sesión
+</button>
+
+<hr>
+
+<h2>Agregar Contenido</h2>
+
+<select id="tipo">
+    <option value="video">Video</option>
+    <option value="imagen">Imagen</option>
+    <option value="audio">Audio</option>
+    <option value="texto">Texto</option>
+</select>
+
+<br><br>
+
+<input
+    type="text"
+    id="titulo"
+    placeholder="Título">
+
+<br><br>
+
+<input
+    type="number"
+    id="grado"
+    placeholder="Grado">
+
+<br><br>
+
+<input
+    type="text"
+    id="contenido"
+    placeholder="URL o Texto">
+
+<br><br>
+
+<button id="btnGuardar">
+    Guardar
+</button>
+
+<hr>
+
+<div id="resultado"></div>
+
+<hr>
+
+<h2>Contenido Registrado</h2>
+
+<div id="listaContenido"></div>
+
+<script type="module">
+
+import { db, auth } from "./config-firebase.js";
+
+import {
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    doc
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+const tipo = document.getElementById("tipo");
+const titulo = document.getElementById("titulo");
+const grado = document.getElementById("grado");
+const contenido = document.getElementById("contenido");
+const resultado = document.getElementById("resultado");
+const listaContenido = document.getElementById("listaContenido");
+
+onAuthStateChanged(auth, (user) => {
+
+    if (!user) {
+
+        window.location.href = "login.html";
+
+    }
+
+});
+
+document
+.getElementById("btnLogout")
+.addEventListener("click", async () => {
+
+    await signOut(auth);
+
+});
+
+document
+.getElementById("btnGuardar")
+.addEventListener("click", async () => {
+
+    try {
+
+        const datos = {
+
+            tipo: tipo.value,
+            titulo: titulo.value,
+            grado: Number(grado.value)
+
+        };
+
+        if (tipo.value === "texto") {
+
+            datos.texto = contenido.value;
+
+        } else {
+
+            datos.src = contenido.value;
+
+        }
+
+        await addDoc(
+            collection(db, "contenido"),
+            datos
+        );
+
+        resultado.innerHTML =
+            "Contenido guardado correctamente";
+
+        titulo.value = "";
+        grado.value = "";
+        contenido.value = "";
+
+        cargarContenido();
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        resultado.innerHTML =
+            error.message;
+
+    }
+
+});
+
+function convertirYoutube(url) {
+    return url.replace("watch?v=", "embed/");
+}
+
+async function cargarContenido() {
+
+    listaContenido.innerHTML = "";
+
+    const querySnapshot = await getDocs(
+        collection(db, "contenido")
+    );
+
+    querySnapshot.forEach((documento) => {
+
+        const item = documento.data();
+        const id = documento.id;
+
+        let mediaHTML = "";
+
+        if (item.tipo === "video") {
+
+            mediaHTML = `
+                <iframe width="200" height="120"
+                    src="${convertirYoutube(item.src)}"
+                    frameborder="0"
+                    allowfullscreen>
+                </iframe>
+            `;
+        }
+
+        if (item.tipo === "imagen") {
+
+            mediaHTML = `
+                <img src="${item.src}"
+                width="200">
+            `;
+        }
+
+        if (item.tipo === "audio") {
+
+            mediaHTML = `
+                <audio controls>
+                    <source src="${item.src}" type="audio/mpeg">
+                </audio>
+            `;
+        }
+
+        if (item.tipo === "texto") {
+
+            mediaHTML = `
+                <p>${item.texto}</p>
+            `;
+        }
+
+        listaContenido.innerHTML += `
+
+            <div style="
+                border:1px solid gray;
+                padding:10px;
+                margin:10px;
+            ">
+
+                <b>${item.tipo}</b>
+
+                <br>
+
+                ${item.titulo || "Sin título"}
+
+                <br>
+
+                Grado: ${item.grado}
+
+                <br><br>
+
+                ${mediaHTML}
+
+                <br>
+
+                ID: ${id}
+
+                <br><br>
+
+                <button onclick="eliminarContenido('${id}')">
+                    Eliminar
+                </button>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+window.eliminarContenido = async (id) => {
+
+    const confirmar = confirm(
+        "¿Desea eliminar este contenido?"
+    );
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+    try {
+
+        await deleteDoc(
+            doc(db, "contenido", id)
+        );
+
+        cargarContenido();
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        alert(error.message);
+
+    }
+
+};
+
+cargarContenido();
+
+</script>
+
+</body>
+</html>

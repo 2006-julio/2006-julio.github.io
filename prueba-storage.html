@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Prueba Storage</title>
+</head>
+<body>
+
+<h2>Subir Imagen</h2>
+
+<input type="file" id="archivo">
+
+<button id="btnSubir">
+    Subir
+</button>
+
+<p id="resultado"></p>
+
+<script type="module">
+
+import { storage } from "./config-firebase.js";
+
+import {
+    ref,
+    uploadBytes,
+    getDownloadURL
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-storage.js";
+
+const archivo = document.getElementById("archivo");
+
+const resultado = document.getElementById("resultado");
+
+document.getElementById("btnSubir")
+.addEventListener("click", async () => {
+
+    const file = archivo.files[0];
+
+    if (!file) {
+
+        alert("Seleccione un archivo");
+
+        return;
+    }
+
+    const storageRef = ref(
+        storage,
+        "imagenes/" + file.name
+    );
+
+    await uploadBytes(
+        storageRef,
+        file
+    );
+
+    const url = await getDownloadURL(
+        storageRef
+    );
+
+    resultado.textContent = url;
+
+    console.log(url);
+
+});
+</script>
+
+</body>
+</html>

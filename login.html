@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Administrador</title>
+</head>
+<body>
+
+<h2>Iniciar Sesión</h2>
+
+<input
+    type="email"
+    id="correo"
+    placeholder="Correo">
+
+<br><br>
+
+<input
+    type="password"
+    id="password"
+    placeholder="Contraseña">
+
+<br><br>
+
+<button id="btnLogin">
+    Ingresar
+</button>
+
+<p id="mensaje"></p>
+
+<script type="module">
+
+import { auth } from "./config-firebase.js";
+
+import {
+    signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+const correo = document.getElementById("correo");
+const password = document.getElementById("password");
+const mensaje = document.getElementById("mensaje");
+
+document.getElementById("btnLogin")
+.addEventListener("click", async () => {
+
+    try {
+
+        await signInWithEmailAndPassword(
+            auth,
+            correo.value,
+            password.value
+        );
+
+        window.location.href =
+            "admin.html";
+
+    } catch(error) {
+
+        mensaje.textContent =
+            error.message;
+
+        console.error(error);
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
