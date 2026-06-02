@@ -213,3 +213,48 @@ body::before {
     box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
   }
 }
+
+.contador-contenedor {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.contador-box {
+    background: linear-gradient(135deg, #fffb03, #f0e551);
+    color: rgb(0, 0, 0);
+    padding: 10px 18px; /* reducido */
+    border-radius: 12px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+    text-align: center;
+    min-width: 120px; /* reducido */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contador-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+}
+
+.contador-titulo {
+    font-size: 10px; /* reducido */
+    letter-spacing: 1px;
+    opacity: 0.85;
+    margin-bottom: 6px;
+}
+
+.contador-numero {
+    font-size: 22px; /* reducido ~50% */
+    font-weight: bold;
+    animation: pop 0.5s ease;
+}
+
+@keyframes pop {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}

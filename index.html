@@ -20,7 +20,12 @@
     <a href="login.html" class="btn btn-rayo">Iniciar sesión</a>
     
 </div>
-<p>Esta página ha sido visitada <span id="visitas">0</span> veces.</p>
+<div class="contador-contenedor">
+    <div class="contador-box">
+        <div class="contador-titulo">VISITAS TOTALES</div>
+        <div class="contador-numero" id="visitas">0</div>
+    </div>
+</div>
 
 <div class="container">
 
@@ -232,30 +237,36 @@
     <a href="https://wa.me/51948642872?text=hola%20quiero%20informacion%20sobre%20el%20taller%20de%20ingles%20https://englishteamxammar.github.io" class="whatsapp-float" target="_blank">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
-<script>
-    const USUARIO_GITHUB = "2006-julio"; 
-    const REPOSITORIO_GITHUB = "2006-julio.github.io";
+<script type="module">
+    import { db } from "./config-firebase.js";
+    import {
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc
+    } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-    async function obtenerVisitas() {
-        try {
-            const url = `https://counterapi.dev/${USUARIO_GITHUB}/key/${REPOSITORIO_GITHUB}/hit`;
+    const ref = doc(db, "stats", "visitas");
 
-            const respuesta = await fetch(url);
-            const datos = await respuesta.json();
+    // Incrementar visitas
+    async function sumarVisita() {
+    const snap = await getDoc(ref);
 
-            console.log(datos); // 👈 importante para ver qué devuelve realmente
+    if (!snap.exists()) {
+        await setDoc(ref, { count: 1 });
+        document.getElementById("visitas").innerText = 1;
+    } else {
+        const actual = snap.data().count + 1;
 
-            const visitas = datos.value ?? datos.count ?? 0;
+        await updateDoc(ref, {
+        count: actual
+        });
 
-            document.getElementById('visitas').innerText = visitas;
-
-        } catch (error) {
-            console.error("Error al cargar el contador:", error);
-            document.getElementById('visitas').innerText = "No disponible";
-        }
+        document.getElementById("visitas").innerText = actual;
+    }
     }
 
-    obtenerVisitas();
+    sumarVisita();
 </script>
 </body>
 </html>
