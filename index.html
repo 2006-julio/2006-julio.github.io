@@ -18,7 +18,9 @@
 <div class="container-fluid p-3 d-flex justify-content-between align-items-center">
     <h4 class="titulo m-0">PLATAFORMA DE INGLES</h4>
     <a href="login.html" class="btn btn-rayo">Iniciar sesión</a>
+    
 </div>
+<p>Esta página ha sido visitada <span id="visitas">0</span> veces.</p>
 
 <div class="container">
 
@@ -230,5 +232,30 @@
     <a href="https://wa.me/51948642872?text=hola%20quiero%20informacion%20sobre%20el%20taller%20de%20ingles%20https://englishteamxammar.github.io" class="whatsapp-float" target="_blank">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
+<script>
+    const USUARIO_GITHUB = "2006-julio"; 
+    const REPOSITORIO_GITHUB = "2006-julio.github.io";
+
+    async function obtenerVisitas() {
+        try {
+            const url = `https://counterapi.dev/${USUARIO_GITHUB}/key/${REPOSITORIO_GITHUB}/hit`;
+
+            const respuesta = await fetch(url);
+            const datos = await respuesta.json();
+
+            console.log(datos); // 👈 importante para ver qué devuelve realmente
+
+            const visitas = datos.value ?? datos.count ?? 0;
+
+            document.getElementById('visitas').innerText = visitas;
+
+        } catch (error) {
+            console.error("Error al cargar el contador:", error);
+            document.getElementById('visitas').innerText = "No disponible";
+        }
+    }
+
+    obtenerVisitas();
+</script>
 </body>
 </html>
