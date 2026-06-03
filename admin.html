@@ -56,8 +56,33 @@
 <div id="resultado"></div>
 
 <hr>
+<hr>
+
+<h2>Buscar Contenido</h2>
+
+<input
+    type="text"
+    id="buscar"
+    placeholder="Buscar por título..."
+    list="sugerencias">
+
+<datalist id="sugerencias"></datalist>
+
+<select id="filtroGrado">
+    <option value="">Todos los grados</option>
+    <option value="1">1°</option>
+    <option value="2">2°</option>
+    <option value="3">3°</option>
+    <option value="4">4°</option>
+    <option value="5">5°</option>
+</select>
+
+<hr>
 
 <h2>Contenido Registrado</h2>
+
+<div id="listaContenido"></div>
+
 
 <div id="listaContenido"></div>
 
@@ -84,6 +109,10 @@ const grado = document.getElementById("grado");
 const contenido = document.getElementById("contenido");
 const resultado = document.getElementById("resultado");
 const listaContenido = document.getElementById("listaContenido");
+const buscar = document.getElementById("buscar");
+const filtroGrado = document.getElementById("filtroGrado");
+
+let contenidoGlobal = [];
 
 onAuthStateChanged(auth, (user) => {
 
@@ -156,19 +185,60 @@ document
 function convertirYoutube(url) {
     return url.replace("watch?v=", "embed/");
 }
+function cargarSugerencias() {
 
-async function cargarContenido() {
+    const datalist =
+        document.getElementById("sugerencias");
+
+    datalist.innerHTML = "";
+
+    const titulos = [
+        ...new Set(
+            contenidoGlobal
+            .map(item => item.titulo)
+            .filter(Boolean)
+        )
+    ];
+
+    titulos.forEach((titulo) => {
+
+        datalist.innerHTML += `
+            <option value="${titulo}">
+        `;
+
+    });
+
+}
+
+function mostrarContenido() {
 
     listaContenido.innerHTML = "";
 
-    const querySnapshot = await getDocs(
-        collection(db, "contenido")
-    );
+    const textoBusqueda =
+        buscar.value.toLowerCase();
 
-    querySnapshot.forEach((documento) => {
+    const gradoSeleccionado =
+        filtroGrado.value;
 
-        const item = documento.data();
-        const id = documento.id;
+    const filtrados =
+        contenidoGlobal.filter(item => {
+
+            const coincideTitulo =
+                (item.titulo || "")
+                .toLowerCase()
+                .includes(textoBusqueda);
+
+            const coincideGrado =
+                gradoSeleccionado === "" ||
+                item.grado ==
+                gradoSeleccionado;
+
+            return coincideTitulo &&
+                   coincideGrado;
+
+        });
+
+    filtrados.forEach((item) => {
 
         let mediaHTML = "";
 
@@ -181,6 +251,7 @@ async function cargarContenido() {
                     allowfullscreen>
                 </iframe>
             `;
+
         }
 
         if (item.tipo === "imagen") {
@@ -189,15 +260,18 @@ async function cargarContenido() {
                 <img src="${item.src}"
                 width="200">
             `;
+
         }
 
         if (item.tipo === "audio") {
 
             mediaHTML = `
                 <audio controls>
-                    <source src="${item.src}" type="audio/mpeg">
+                    <source src="${item.src}"
+                    type="audio/mpeg">
                 </audio>
             `;
+
         }
 
         if (item.tipo === "texto") {
@@ -205,6 +279,7 @@ async function cargarContenido() {
             mediaHTML = `
                 <p>${item.texto}</p>
             `;
+
         }
 
         listaContenido.innerHTML += `
@@ -231,11 +306,11 @@ async function cargarContenido() {
 
                 <br>
 
-                ID: ${id}
+                ID: ${item.id}
 
                 <br><br>
 
-                <button onclick="eliminarContenido('${id}')">
+                <button onclick="eliminarContenido('${item.id}')">
                     Eliminar
                 </button>
 
@@ -247,6 +322,28 @@ async function cargarContenido() {
 
 }
 
+async function cargarContenido() {
+
+    const querySnapshot = await getDocs(
+        collection(db, "contenido")
+    );
+
+    contenidoGlobal = [];
+
+    querySnapshot.forEach((documento) => {
+
+        contenidoGlobal.push({
+            id: documento.id,
+            ...documento.data()
+        });
+
+    });
+
+    cargarSugerencias();
+
+    mostrarContenido();
+
+}
 window.eliminarContenido = async (id) => {
 
     const confirmar = confirm(
@@ -279,7 +376,15 @@ window.eliminarContenido = async (id) => {
 };
 
 cargarContenido();
+buscar.addEventListener(
+    "input",
+    mostrarContenido
+);
 
+filtroGrado.addEventListener(
+    "change",
+    mostrarContenido
+);
 </script>
 
 </body>
