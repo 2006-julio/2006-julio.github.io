@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Imprimir códigos QR</title>
+
+    <link
+        rel="stylesheet"
+        href="./style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <main class="pagina-impresion">
+
+        <!-- BARRA DE CONTROL -->
+        <div class="controles-impresion no-imprimir">
+
+            <button
+                type="button"
+                class="boton-principal"
+                id="btnImprimir"
+            >
+                🖨️ Imprimir hoja
+            </button>
+
+            <a
+                href="./index.html"
+                class="boton-secundario"
+            >
+                Volver
+            </a>
+
+        </div>
+
+
+        <!-- INFORMACIÓN DEL ALUMNO -->
+        <section
+            class="cabecera-impresion"
+            id="cabeceraAlumno"
+        >
+
+            <h1>Códigos QR del alumno</h1>
+
+            <h2 id="nombreAlumno">
+                Cargando...
+            </h2>
+
+            <p id="gradoSeccion">
+                Cargando...
+            </p>
+
+            <div class="datos-cabecera-impresion">
+                <span>Nombre: <strong id="nombreImpresion"></strong></span>
+                <span>Apellido: <strong id="apellidoImpresion"></strong></span>
+                <span>Grado: <strong id="gradoImpresion"></strong></span>
+                <span>Sección: <strong id="seccionImpresion"></strong></span>
+            </div>
+
+        </section>
+
+
+        <!-- HOJA A4 -->
+        <section
+            class="hoja-qr"
+            id="hojaQR"
+        >
+
+            <!-- Los 12 QR se generarán automáticamente aquí -->
+
+        </section>
+
+
+        <!-- MENSAJE DE ERROR -->
+        <div
+            id="mensajeError"
+            class="mensaje-error no-imprimir"
+        ></div>
+
+    </main>
+
+
+    <!-- QRCode.js -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+    ></script>
+
+
+    <!-- JavaScript -->
+    <script
+        type="module"
+        src="./imprimirqr.js"
+    ></script>
+
+</body>
+
+</html>

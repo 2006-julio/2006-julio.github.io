@@ -1,0 +1,997 @@
+* {
+  box-sizing: border-box;
+  }
+
+body {
+margin: 0;
+padding: 30px;
+font-family: Arial, sans-serif;
+background: #f2f4f7;
+color: #1f2937;
+}
+
+.contenedor {
+max-width: 1200px;
+margin: auto;
+}
+
+/* =========================
+ENCABEZADO
+========================= */
+
+.encabezado {
+margin-bottom: 25px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 20px;
+}
+
+.encabezado h1 {
+margin: 0;
+font-size: 30px;
+}
+
+.encabezado p {
+margin-top: 6px;
+color: #6b7280;
+}
+
+/* =========================
+TARJETAS
+========================= */
+
+.tarjeta {
+background: white;
+border-radius: 12px;
+padding: 25px;
+margin-bottom: 25px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+}
+
+.tarjeta h2 {
+margin-top: 0;
+}
+
+/* =========================
+FORMULARIO
+========================= */
+
+.formulario {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 18px;
+}
+
+.campo {
+margin-bottom: 5px;
+}
+
+label {
+display: block;
+margin-bottom: 7px;
+font-weight: bold;
+}
+
+label span {
+color: #777;
+font-size: 13px;
+font-weight: normal;
+}
+
+input,
+select {
+width: 100%;
+padding: 11px;
+border: 1px solid #d1d5db;
+border-radius: 7px;
+font-size: 15px;
+background: white;
+}
+
+input:focus,
+select:focus {
+outline: none;
+border-color: #1976d2;
+}
+
+/* =========================
+BOTONES
+========================= */
+
+button {
+font-family: inherit;
+}
+
+.boton-principal {
+width: 100%;
+margin-top: 20px;
+padding: 13px;
+border: none;
+border-radius: 7px;
+background: #1976d2;
+color: white;
+font-size: 16px;
+font-weight: bold;
+cursor: pointer;
+}
+
+.boton-principal:hover {
+background: #125ca1;
+}
+
+.boton-principal:disabled {
+background: #9ca3af;
+cursor: not-allowed;
+}
+
+.boton-secundario {
+padding: 10px 15px;
+border: 1px solid #d1d5db;
+border-radius: 7px;
+background: white;
+cursor: pointer;
+}
+
+.boton-secundario:hover {
+background: #f3f4f6;
+}
+
+.boton-impresion-total {
+display: inline-block;
+width: auto;
+margin-top: 0;
+text-decoration: none;
+white-space: nowrap;
+}
+
+/* =========================
+MENSAJES
+========================= */
+
+#mensaje {
+text-align: center;
+font-weight: bold;
+margin-bottom: 0;
+}
+
+/* =========================
+RESULTADO
+========================= */
+
+.resultado {
+display: none;
+}
+
+.resultado-header p {
+color: #6b7280;
+}
+
+.datos-registrados {
+max-width: 600px;
+}
+
+.datos-registrados p {
+margin: 10px 0;
+}
+
+.id {
+color: #1976d2;
+font-weight: bold;
+word-break: break-all;
+}
+
+#qrcode {
+display: flex;
+justify-content: center;
+margin-top: 25px;
+}
+
+/* =========================
+LISTA
+========================= */
+
+.lista-header {
+margin-bottom: 20px;
+}
+
+.lista-header h2 {
+margin-bottom: 5px;
+}
+
+.lista-header p {
+margin: 0;
+color: #6b7280;
+}
+
+/* =========================
+FILTROS
+========================= */
+
+.filtros {
+display: grid;
+grid-template-columns: 2fr 1fr 1fr auto;
+gap: 12px;
+align-items: end;
+margin-bottom: 25px;
+}
+
+.filtros label {
+font-size: 14px;
+}
+
+/* =========================
+TABLA
+========================= */
+
+.tabla-contenedor {
+overflow-x: auto;
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+min-width: 900px;
+}
+
+thead {
+background: #f3f4f6;
+}
+
+th,
+td {
+padding: 14px 12px;
+text-align: left;
+border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+font-size: 14px;
+}
+
+td {
+font-size: 14px;
+}
+
+.nombre-alumno {
+font-weight: bold;
+}
+
+.id-tabla {
+max-width: 130px;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+color: #1976d2;
+font-family: monospace;
+}
+
+.sin-telefono {
+color: #777;
+font-style: italic;
+}
+
+/* =========================
+ACCIONES
+========================= */
+
+.acciones {
+display: flex;
+gap: 6px;
+}
+
+.accion {
+padding: 7px 9px;
+border: 1px solid #d1d5db;
+border-radius: 6px;
+background: white;
+cursor: pointer;
+font-size: 13px;
+}
+
+.accion:hover {
+background: #f3f4f6;
+}
+
+/* =========================
+MODALES
+========================= */
+
+.modal {
+display: none;
+position: fixed;
+z-index: 1000;
+inset: 0;
+background: rgba(0, 0, 0, 0.55);
+align-items: center;
+justify-content: center;
+padding: 20px;
+}
+
+.modal-contenido {
+position: relative;
+width: 100%;
+max-width: 500px;
+max-height: 90vh;
+overflow-y: auto;
+background: white;
+border-radius: 12px;
+padding: 30px;
+}
+
+.cerrar {
+position: absolute;
+right: 15px;
+top: 10px;
+border: none;
+background: transparent;
+font-size: 30px;
+cursor: pointer;
+}
+
+.modal-qr {
+text-align: center;
+}
+
+#qrcodeModal {
+display: flex;
+justify-content: center;
+margin: 25px 0;
+}
+
+/* =========================
+RESPONSIVE
+========================= */
+
+@media (max-width: 800px) {
+body {
+    padding: 15px;
+}
+
+.encabezado {
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.formulario {
+    grid-template-columns: 1fr;
+}
+
+.filtros {
+    grid-template-columns: 1fr;
+}
+
+.encabezado h1 {
+    font-size: 24px;
+}
+
+.boton-impresion-total {
+    width: 100%;
+    text-align: center;
+}
+
+}
+
+
+/*ESTILOS DE EDITAR ALUMNO HTML*/
+
+/* =========================
+EDICIÓN DE ALUMNO
+========================= */
+
+.texto-ayuda {
+color: #6b7280;
+margin-top: -10px;
+margin-bottom: 20px;
+}
+
+.busqueda-edicion {
+display: flex;
+gap: 10px;
+}
+
+.busqueda-edicion input {
+flex: 1;
+}
+
+.boton-buscar {
+width: auto;
+margin-top: 0;
+white-space: nowrap;
+}
+
+.cabecera-edicion {
+border-bottom: 1px solid #e5e7eb;
+margin-bottom: 25px;
+padding-bottom: 15px;
+}
+
+.cabecera-edicion h2 {
+margin-bottom: 8px;
+}
+
+.botones-edicion {
+display: flex;
+gap: 10px;
+margin-top: 20px;
+}
+
+.botones-edicion .boton-principal {
+margin-top: 0;
+}
+
+.botones-edicion .boton-secundario {
+flex: 1;
+}
+
+.datos-actualizados {
+background: #f8fafc;
+border-radius: 8px;
+padding: 20px;
+}
+
+.datos-actualizados p {
+margin: 10px 0;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 650px) {
+.busqueda-edicion {
+    flex-direction: column;
+}
+
+.boton-buscar {
+    width: 100%;
+}
+
+.botones-edicion {
+    flex-direction: column;
+}
+
+}
+
+/* ==========================================
+   ELIMINAR ALUMNO
+   ========================================== */
+
+.advertencia-eliminacion {
+    margin-top: 20px;
+    padding: 16px;
+    border: 1px solid #f0b429;
+    border-radius: 10px;
+    background: #fff8e1;
+}
+
+.advertencia-eliminacion h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.advertencia-eliminacion p {
+    margin: 6px 0;
+}
+
+.boton-peligro {
+    width: auto;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 18px;
+    background: #dc2626;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.boton-peligro:hover {
+    background: #b91c1c;
+}
+
+.boton-peligro:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.datos-alumno {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.datos-alumno p {
+    margin: 0;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+.id-alumno {
+    font-size: 13px;
+    color: #64748b;
+}
+
+@media (max-width: 650px) {
+
+    .datos-alumno {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* ==========================================
+   LOGIN
+   ========================================== */
+
+.contenedor-login {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 430px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.login-header h1 {
+    margin-bottom: 8px;
+}
+
+.login-header p {
+    margin: 0;
+    color: #64748b;
+}
+
+.login-card .campo {
+    margin-bottom: 18px;
+}
+
+.login-card input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.login-card .boton-principal {
+    width: 100%;
+}
+
+.mensaje-login {
+    min-height: 20px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+
+
+/* ==========================================
+   IMPRESIÓN DE 12 QR
+   ========================================== */
+
+.pagina-impresion {
+    width: 100%;
+}
+
+.controles-impresion {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px auto;
+}
+
+.filtros-impresion {
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.filtros-impresion label {
+    margin-bottom: 0;
+    font-size: 13px;
+}
+
+.filtros-impresion select {
+    width: auto;
+    min-width: 135px;
+}
+
+.filtros-impresion button {
+    margin-top: 0;
+}
+
+.cabecera-impresion {
+    text-align: center;
+    margin: 20px auto;
+}
+
+.cabecera-impresion h1 {
+    margin-bottom: 8px;
+}
+
+.cabecera-impresion h2 {
+    margin: 5px 0;
+}
+
+.cabecera-impresion p {
+    margin: 5px 0;
+    color: #64748b;
+}
+
+.datos-cabecera-impresion {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #475569;
+}
+
+
+/* ==========================================
+   HOJA A4
+   ========================================== */
+
+.hoja-qr {
+
+    width: 210mm;
+    min-height: 297mm;
+
+    margin: 20px auto;
+
+    padding: 8mm;
+
+    box-sizing: border-box;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    grid-template-rows:
+        repeat(4, 1fr);
+
+    gap: 4mm;
+
+    background: white;
+}
+
+
+/* ==========================================
+   TARJETA INDIVIDUAL
+   ========================================== */
+
+.tarjeta-qr {
+
+    border: 1px dashed #64748b;
+
+    border-radius: 6px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 5mm;
+
+    box-sizing: border-box;
+
+    min-height: 60mm;
+}
+
+
+.institucion-qr {
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 4mm;
+}
+
+
+.codigo-qr {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+
+.codigo-qr img {
+
+    display: block;
+}
+
+
+.mensaje-error {
+
+    text-align: center;
+
+    margin: 20px;
+
+    color: #dc2626;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   CONFIGURACIÓN DE IMPRESIÓN
+   ========================================== */
+
+@media print {
+
+    @page {
+
+        size: A4 portrait;
+
+        margin: 0;
+    }
+
+
+    body {
+
+        margin: 0;
+
+        padding: 0;
+
+        background: white;
+    }
+
+
+    .no-imprimir {
+
+        display: none !important;
+    }
+
+
+    .cabecera-impresion {
+        margin: 0;
+        padding: 3mm 8mm 2mm;
+    }
+
+    .cabecera-impresion h1,
+    .cabecera-impresion h2,
+    .cabecera-impresion > p {
+        display: none;
+    }
+
+    .datos-cabecera-impresion {
+        justify-content: flex-start;
+        gap: 2px 12px;
+        margin: 0;
+        font-size: 9px;
+        line-height: 1.2;
+    }
+
+
+    .pagina-impresion {
+
+        width: 210mm;
+    }
+
+
+    .hoja-qr {
+
+        width: 210mm;
+
+        height: calc(297mm - 14mm);
+
+        min-height: 0;
+
+        margin: 0;
+
+        padding: 8mm;
+
+        gap: 4mm;
+
+        box-sizing: border-box;
+
+        page-break-after: avoid;
+    }
+
+
+    .tarjeta-qr {
+
+        break-inside: avoid;
+
+        page-break-inside: avoid;
+
+        border: 1px dashed #777;
+    }
+
+}
+
+
+
+/* =========================================
+   IMPRESIÓN DE QR DE TODOS LOS ALUMNOS
+   ========================================= */
+
+.informacion-admin {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 5mm;
+    font-size: 11px;
+  font-weight: 600;
+}
+
+.hoja-qr-todos {
+    position: relative;
+  page-break-after: always;
+  break-after: page;
+}
+
+
+/* =========================================
+   IMPRESIÓN A4
+   ========================================= */
+
+@media print {
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
+
+
+  .no-imprimir {
+    display: none !important;
+  }
+
+
+  .pagina-impresion {
+    width: 210mm;
+    margin: 0;
+    padding: 0;
+  }
+
+
+  .hoja-qr {
+    width: 210mm;
+    height: 297mm;
+
+    min-height: 297mm;
+
+    margin: 0;
+
+    padding: 8mm;
+
+    box-sizing: border-box;
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, 1fr);
+
+    grid-template-rows:
+      repeat(4, 1fr);
+
+    gap: 4mm;
+
+    background: white;
+
+    page-break-after: always;
+
+    break-after: page;
+  }
+
+
+    .hoja-qr-todos {
+        padding-top: 16mm;
+    }
+
+
+    .hoja-qr-todos .informacion-admin {
+        position: absolute;
+        top: 3mm;
+        left: 8mm;
+        width: calc(100% - 16mm);
+        margin: 0;
+        font-size: 9px;
+        line-height: 1.2;
+    }
+
+
+  .hoja-qr:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+
+    .filtros-impresion {
+        display: none !important;
+    }
+
+
+  .tarjeta-qr {
+
+    border: 1px dashed #777;
+
+    border-radius: 6px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 5mm;
+
+    box-sizing: border-box;
+
+    min-height: 60mm;
+
+    break-inside: avoid;
+
+    page-break-inside: avoid;
+
+  }
+
+
+  .institucion-qr {
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-align: center;
+
+    line-height: 1.2;
+
+    margin-bottom: 4mm;
+
+  }
+
+
+  .codigo-qr {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+  }
+
+
+  .codigo-qr img {
+
+    display: block;
+
+  }
+
+}
+

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Imprimir QR de todos los alumnos</title>
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+  <main class="pagina-impresion">
+
+    <!-- CONTROLES DEL ADMINISTRADOR -->
+    <div class="controles-impresion no-imprimir">
+
+      <button
+        type="button"
+        class="boton-principal"
+        id="btnImprimir">
+        🖨️ Imprimir todos los QR
+      </button>
+
+      <a
+        href="./index.html"
+        class="boton-secundario">
+        Volver
+      </a>
+
+    </div>
+
+    <!-- INFORMACIÓN SOLO PARA EL ADMINISTRADOR -->
+    <section class="cabecera-impresion no-imprimir">
+
+      <h1>Imprimir QR de todos los alumnos</h1>
+
+      <p id="estadoCarga">
+        Cargando alumnos...
+      </p>
+
+      <p id="resumen">
+        Alumnos: 0 | Hojas: 0 | QR: 0
+      </p>
+
+      <div class="filtros-impresion">
+        <label for="filtroGradoImpresion">Grado</label>
+        <select id="filtroGradoImpresion">
+          <option value="">Todos los grados</option>
+          <option value="1ro">1ro</option>
+          <option value="2do">2do</option>
+          <option value="3ro">3ro</option>
+          <option value="4to">4to</option>
+          <option value="5to">5to</option>
+        </select>
+
+        <label for="filtroSeccionImpresion">Sección</label>
+        <select id="filtroSeccionImpresion">
+          <option value="">Todas las secciones</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+          <option value="E">E</option>
+          <option value="F">F</option>
+          <option value="G">G</option>
+          <option value="H">H</option>
+          <option value="I">I</option>
+          <option value="J">J</option>
+        </select>
+
+        <button type="button" class="boton-secundario" id="btnMostrarTodos">
+          Mostrar todos
+        </button>
+      </div>
+
+    </section>
+
+    <!-- AQUÍ SE GENERARÁN TODAS LAS HOJAS -->
+    <section id="contenedorHojasQR"></section>
+
+    <!-- MENSAJE DE ERROR -->
+    <div
+      id="mensajeError"
+      class="mensaje-error no-imprimir">
+    </div>
+
+  </main>
+
+
+  <!-- Biblioteca para generar QR -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- JavaScript -->
+  <script
+    type="module"
+    src="./imprimirqr_todoslosalumnos.js">
+  </script>
+
+</body>
+</html>
+

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar alumno</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <main class="contenedor">
+        <section class="cabecera-edicion">
+            <div>
+                <h1>Eliminar alumno</h1>
+                <p>Busca un alumno y elimina su registro de Firebase.</p>
+            </div>
+
+            <a href="./index.html" class="boton-secundario">
+                Volver al inicio
+            </a>
+        </section>
+
+        <!-- BUSCAR ALUMNO -->
+        <section class="tarjeta">
+
+            <h2>Buscar alumno</h2>
+
+            <p class="texto-ayuda">
+                Ingresa el ID del documento de Firebase del alumno.
+            </p>
+
+            <div class="busqueda-edicion">
+
+                <input
+                    type="text"
+                    id="idBuscar"
+                    placeholder="Ejemplo: AbC123xYz..."
+                >
+
+                <button
+                    type="button"
+                    class="boton-buscar"
+                    id="btnBuscar"
+                >
+                    Buscar alumno
+                </button>
+
+            </div>
+
+            <p id="mensajeBusqueda"></p>
+
+        </section>
+
+
+        <!-- DATOS DEL ALUMNO -->
+        <section
+            class="tarjeta"
+            id="seccionAlumno"
+            style="display: none;"
+        >
+
+            <h2>Alumno encontrado</h2>
+
+            <div class="cabecera-edicion">
+
+                <div>
+                    <strong id="nombreAlumno"></strong>
+
+                    <p id="gradoSeccionAlumno"></p>
+                </div>
+
+                <span class="id-alumno">
+                    ID: <strong id="idAlumno"></strong>
+                </span>
+
+            </div>
+
+
+            <div class="datos-alumno">
+
+                <p>
+                    <strong>Nombre:</strong>
+                    <span id="datoNombre"></span>
+                </p>
+
+                <p>
+                    <strong>Apellido:</strong>
+                    <span id="datoApellido"></span>
+                </p>
+
+                <p>
+                    <strong>Grado:</strong>
+                    <span id="datoGrado"></span>
+                </p>
+
+                <p>
+                    <strong>Sección:</strong>
+                    <span id="datoSeccion"></span>
+                </p>
+
+                <p>
+                    <strong>Apoderado:</strong>
+                    <span id="datoTelefono"></span>
+                </p>
+
+            </div>
+
+
+            <!-- ADVERTENCIA -->
+            <div class="advertencia-eliminacion">
+
+                <h3>⚠️ Atención</h3>
+
+                <p>
+                    Esta acción eliminará permanentemente el registro
+                    del alumno de la base de datos.
+                </p>
+
+                <p>
+                    Esta acción no se puede deshacer.
+                </p>
+
+            </div>
+
+
+            <div class="botones-edicion">
+
+                <button
+                    type="button"
+                    class="boton-peligro"
+                    id="btnEliminar"
+                >
+                    Eliminar alumno
+                </button>
+
+                <button
+                    type="button"
+                    class="boton-secundario"
+                    id="btnCancelar"
+                >
+                    Cancelar
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- RESULTADO -->
+        <section
+            class="tarjeta datos-actualizados"
+            id="resultadoEliminacion"
+            style="display: none;"
+        >
+
+            <h2>Alumno eliminado</h2>
+
+            <p>
+                El registro fue eliminado correctamente de Firebase.
+            </p>
+
+            <p>
+                <strong>Alumno:</strong>
+                <span id="alumnoEliminado"></span>
+            </p>
+
+            <p>
+                <strong>ID:</strong>
+                <span id="idEliminado"></span>
+            </p>
+
+            <a
+                href="./index.html"
+                class="boton-principal"
+            >
+                Volver a la lista de alumnos
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <script type="module" src="./eliminaralumno.js"></script>
+
+</body>
+</html>
