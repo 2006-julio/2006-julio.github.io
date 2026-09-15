@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sistema de alumnos</title>
+<title>Sistema de registro</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -20,7 +20,7 @@
 
 <header class="encabezado">
     <div>
-        <h1>Sistema de alumnos</h1>
+        <h1>Sistema de registro</h1>
         <p>Registro y administración de estudiantes</p>
     </div>
 
@@ -50,23 +50,22 @@
     <div class="formulario">
 
         <div class="campo">
-            <label for="nombre">Nombre</label>
-
-            <input
-                type="text"
-                id="nombre"
-                placeholder="Ejemplo: Juan"
-            >
-        </div>
-
-
-        <div class="campo">
-            <label for="apellido">Apellido</label>
+            <label for="apellido">Apellidos</label>
 
             <input
                 type="text"
                 id="apellido"
                 placeholder="Ejemplo: Pérez García"
+            >
+        </div>
+        
+        <div class="campo">
+            <label for="nombre">Nombres</label>
+
+            <input
+                type="text"
+                id="nombre"
+                placeholder="Ejemplo: Juan"
             >
         </div>
 
@@ -117,7 +116,7 @@
         <div class="campo">
 
             <label for="telefono">
-                Número de padre, madre o apoderado
+                Número del padre, madre o apoderado
                 <span>(opcional)</span>
             </label>
 
@@ -137,7 +136,7 @@
         class="boton-principal"
         id="btnRegistrar"
     >
-        Registrar alumno
+        Registrar estudiante
     </button>
 
 
@@ -156,7 +155,7 @@
     <div class="resultado-header">
 
         <div>
-            <h2>Alumno registrado</h2>
+            <h2>Estudiante registrado</h2>
             <p>El alumno fue guardado correctamente.</p>
         </div>
 
