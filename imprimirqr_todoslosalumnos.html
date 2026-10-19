@@ -19,8 +19,25 @@
       <button
         type="button"
         class="boton-principal"
-        id="btnImprimir">
-        🖨️ Imprimir todos los QR
+        id="btnGenerar"
+        disabled>
+        Generar documento
+      </button>
+
+      <button
+        type="button"
+        class="boton-secundario"
+        id="btnCancelar"
+        hidden>
+        Cancelar generación
+      </button>
+
+      <button
+        type="button"
+        class="boton-principal"
+        id="btnImprimir"
+        disabled>
+        Imprimir todos los QR
       </button>
 
       <a
@@ -37,12 +54,19 @@
       <h1>Imprimir QR de todos los alumnos</h1>
 
       <p id="estadoCarga">
-        Cargando alumnos...
+        Selecciona los filtros y pulsa “Generar documento” para comenzar.
       </p>
 
       <p id="resumen">
-        Alumnos: 0 | Hojas: 0 | QR: 0
+        Aún no se ha generado el documento.
       </p>
+
+      <p class="aviso-generacion">
+        La generación puede tomar varios minutos, según la cantidad de alumnos.
+        El proceso empezará solo cuando lo confirmes.
+      </p>
+
+      <progress id="progresoGeneracion" class="progreso-generacion" hidden></progress>
 
       <div class="filtros-impresion">
         <label for="filtroGradoImpresion">Grado</label>
@@ -68,6 +92,14 @@
           <option value="H">H</option>
           <option value="I">I</option>
           <option value="J">J</option>
+          <option value="K">K</option>
+          <option value="L">L</option>
+          <option value="M">M</option>
+          <option value="N">N</option>
+          <option value="O">O</option>
+          <option value="P">P</option>
+          <option value="Q">Q</option>
+          <option value="R">R</option>
         </select>
 
         <button type="button" class="boton-secundario" id="btnMostrarTodos">
@@ -77,7 +109,6 @@
 
     </section>
 
-    <!-- AQUÍ SE GENERARÁN TODAS LAS HOJAS -->
     <section id="contenedorHojasQR"></section>
 
     <!-- MENSAJE DE ERROR -->
@@ -100,4 +131,3 @@
 
 </body>
 </html>
-

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF de alumnos por grado y sección</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="pagina-listado-pdf">
+    <section class="controles-pdf no-imprimir">
+      <a href="./index.html" class="boton-secundario">Volver</a>
+      <button type="button" id="btnGenerarPdf" class="boton-principal" disabled>
+        Preparar PDF
+      </button>
+      <button type="button" id="btnCancelarPdf" class="boton-secundario" hidden>
+        Cancelar generación
+      </button>
+      <button type="button" id="btnImprimirPdf" class="boton-principal" disabled>
+        Guardar PDF / imprimir
+      </button>
+    </section>
+
+    <section class="estado-pdf no-imprimir">
+      <h1>Alumnos por grado y sección</h1>
+      <p id="estadoPdf">
+        Pulsa “Preparar PDF” para cargar los alumnos y generar sus códigos QR.
+      </p>
+      <p id="resumenPdf">
+        El documento tendrá como máximo dos hojas por cada grado y sección.
+      </p>
+      <p class="aviso-generacion">
+        La preparación puede tomar varios minutos. Los QR contienen el ID de Firebase;
+        el nombre y apellido se muestran junto a cada código. En la vista de impresión,
+        selecciona “Guardar como PDF” para descargar el archivo.
+      </p>
+      <progress id="progresoPdf" class="progreso-generacion" hidden></progress>
+      <p id="errorPdf" class="mensaje-error"></p>
+    </section>
+
+    <section id="hojasPdf"></section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script type="module" src="./pdf_alumnos_por_grado.js"></script>
+</body>
+</html>

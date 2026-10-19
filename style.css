@@ -27,6 +27,12 @@ justify-content: space-between;
 gap: 20px;
 }
 
+.acciones-impresion-inicio {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
 .encabezado h1 {
 margin: 0;
 font-size: 30px;
@@ -143,6 +149,252 @@ width: auto;
 margin-top: 0;
 text-decoration: none;
 white-space: nowrap;
+}
+
+.boton-pdf-alumnos {
+background: #0f766e;
+}
+
+.boton-pdf-alumnos:hover {
+background: #115e59;
+}
+
+.controles-impresion button:disabled,
+.controles-pdf button:disabled {
+opacity: 0.55;
+cursor: not-allowed;
+}
+
+.controles-impresion .boton-principal,
+.controles-pdf .boton-principal {
+width: auto;
+margin-top: 0;
+}
+
+.aviso-generacion {
+max-width: 760px;
+margin: 12px auto;
+padding: 12px 16px;
+border: 1px solid #f0b429;
+border-radius: 8px;
+background: #fff8e1;
+color: #713f12;
+}
+
+.progreso-generacion {
+display: block;
+width: min(600px, 90%);
+height: 18px;
+margin: 16px auto;
+}
+
+.progreso-generacion[hidden],
+#btnReintentarImportacion[hidden],
+#btnCancelarImportacion[hidden] {
+display: none !important;
+}
+
+.boton-importar-excel {
+width: auto;
+margin-top: 16px;
+}
+
+.modal-importar-excel {
+width: min(1200px, 96vw);
+max-width: 1200px;
+max-height: 92vh;
+padding: 0;
+border: 0;
+border-radius: 12px;
+color: #1f2937;
+box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+}
+
+.modal-importar-excel::backdrop {
+background: rgba(15, 23, 42, 0.65);
+}
+
+.modal-importar-contenido {
+max-height: 92vh;
+overflow: auto;
+padding: 24px;
+}
+
+.importador-encabezado {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+gap: 16px;
+margin-bottom: 18px;
+}
+
+.importador-encabezado h2 {
+margin: 0 0 6px;
+}
+
+.importador-encabezado p {
+margin: 0;
+color: #64748b;
+}
+
+.boton-cerrar-importador {
+border: 0;
+background: transparent;
+font-size: 30px;
+line-height: 1;
+cursor: pointer;
+}
+
+.importador-archivo {
+display: grid;
+grid-template-columns: 1fr auto;
+gap: 10px 16px;
+align-items: center;
+padding: 16px;
+border-radius: 8px;
+background: #f8fafc;
+}
+
+.importador-archivo label {
+grid-column: 1 / -1;
+margin: 0;
+}
+
+.importador-archivo input[type="file"] {
+min-width: 0;
+}
+
+.importador-archivo p {
+margin: 0;
+overflow-wrap: anywhere;
+color: #64748b;
+}
+
+.importador-archivo .boton-principal,
+.acciones-importador .boton-principal {
+width: auto;
+margin: 0;
+}
+
+.aviso-importador {
+margin: 16px 0;
+padding: 12px 16px;
+border: 1px solid #93c5fd;
+border-radius: 8px;
+background: #eff6ff;
+}
+
+.mapeo-excel {
+margin: 16px 0;
+padding: 16px;
+border: 1px solid #e2e8f0;
+border-radius: 8px;
+}
+
+.mapeo-excel h3 {
+margin: 0 0 12px;
+}
+
+.mapeo-excel-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+gap: 12px;
+}
+
+.mapeo-excel-grid label {
+margin: 0;
+font-size: 13px;
+}
+
+.mapeo-excel-grid select {
+margin-top: 6px;
+font-weight: normal;
+}
+
+.resumen-importacion {
+margin: 16px 0;
+padding: 12px 16px;
+border-radius: 8px;
+background: #f1f5f9;
+font-weight: 600;
+line-height: 1.6;
+}
+
+.tabla-importacion {
+max-height: 55vh;
+margin: 14px 0;
+}
+
+.tabla-importacion table {
+min-width: 1050px;
+}
+
+.tabla-importacion th {
+position: sticky;
+top: 0;
+z-index: 1;
+background: #f3f4f6;
+}
+
+.tabla-importacion td {
+vertical-align: top;
+}
+
+.tabla-importacion td input[type="text"],
+.tabla-importacion td select {
+min-width: 110px;
+padding: 7px;
+font-size: 13px;
+}
+
+.tabla-importacion td:first-child {
+text-align: center;
+}
+
+.estado-fila {
+min-width: 180px;
+}
+
+.estado-fila small {
+display: block;
+max-width: 270px;
+margin-top: 4px;
+font-size: 12px;
+font-weight: normal;
+line-height: 1.35;
+}
+
+.estado-fila-valido {
+color: #166534;
+}
+
+.estado-fila-incompleto,
+.estado-fila-review {
+color: #92400e;
+}
+
+.estado-fila-duplicado {
+color: #9a3412;
+}
+
+.estado-fila-error {
+color: #b91c1c;
+}
+
+.fila-importada {
+background: #f0fdf4;
+}
+
+.fila-fallida {
+background: #fef2f2;
+}
+
+.acciones-importador {
+display: flex;
+justify-content: flex-end;
+flex-wrap: wrap;
+gap: 10px;
+margin-top: 18px;
 }
 
 /* =========================
@@ -354,6 +606,12 @@ body {
     flex-direction: column;
 }
 
+.acciones-impresion-inicio {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+}
+
 .formulario {
     grid-template-columns: 1fr;
 }
@@ -373,6 +631,36 @@ body {
 
 }
 
+@media (max-width: 650px) {
+    .modal-importar-excel {
+        width: 100%;
+        max-width: none;
+        max-height: 100dvh;
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .modal-importar-contenido {
+        max-height: 100dvh;
+        padding: 16px;
+    }
+
+    .importador-archivo {
+        grid-template-columns: 1fr;
+    }
+
+    .importador-archivo label {
+        grid-column: auto;
+    }
+
+    .acciones-importador {
+        flex-direction: column-reverse;
+    }
+
+    .acciones-importador > button {
+        width: 100%;
+    }
+}
 
 /*ESTILOS DE EDITAR ALUMNO HTML*/
 
@@ -586,6 +874,8 @@ margin: 10px 0;
 .controles-impresion {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 12px;
     margin: 20px auto;
 }
@@ -843,6 +1133,121 @@ margin: 10px 0;
   break-after: page;
 }
 
+/* =========================================
+   LISTADO PDF POR GRADO Y SECCIÓN
+   ========================================= */
+
+.controles-pdf {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px auto;
+}
+
+.controles-pdf .boton-secundario {
+  text-decoration: none;
+}
+
+.estado-pdf {
+  text-align: center;
+  margin: 20px auto;
+}
+
+.estado-pdf h1 {
+  margin-bottom: 8px;
+}
+
+.hoja-listado-pdf {
+  width: 210mm;
+  height: 297mm;
+  margin: 20px auto;
+  padding: 8mm;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 3mm;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  page-break-after: always;
+  break-after: page;
+}
+
+.encabezado-hoja-pdf {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  padding-bottom: 2mm;
+  border-bottom: 1px solid #94a3b8;
+}
+
+.encabezado-hoja-pdf h2 {
+  margin: 0;
+  font-size: 14pt;
+}
+
+.encabezado-hoja-pdf span {
+  font-size: 8pt;
+}
+
+.rejilla-alumnos-pdf {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--columnas-alumnos), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--filas-alumnos), minmax(0, 1fr));
+  gap: 1.5mm;
+}
+
+.tarjeta-alumno-pdf {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1mm;
+  padding: 1mm;
+  border: 1px solid #cbd5e1;
+  text-align: center;
+}
+
+.nombre-alumno-pdf {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: var(--tamano-nombre);
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.codigo-alumno-pdf {
+  width: var(--tamano-qr);
+  height: var(--tamano-qr);
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.codigo-alumno-pdf img,
+.codigo-alumno-pdf canvas {
+  display: block;
+  width: var(--tamano-qr) !important;
+  height: var(--tamano-qr) !important;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.identificador-alumno-pdf {
+  max-width: 100%;
+  font-family: monospace;
+  font-size: 5pt;
+  line-height: 1;
+  overflow-wrap: anywhere;
+}
+
 
 /* =========================================
    IMPRESIÓN A4
@@ -927,6 +1332,31 @@ margin: 10px 0;
     break-after: auto;
   }
 
+  .pagina-listado-pdf {
+    width: 210mm;
+    margin: 0;
+    padding: 0;
+  }
+
+  .hoja-listado-pdf {
+    width: 210mm;
+    height: 297mm;
+    margin: 0;
+    padding: 8mm;
+    box-shadow: none;
+    overflow: hidden;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .hoja-listado-pdf:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  .encabezado-hoja-pdf {
+    min-height: 9mm;
+  }
 
     .filtros-impresion {
         display: none !important;
@@ -995,4 +1425,3 @@ margin: 10px 0;
   }
 
 }
-

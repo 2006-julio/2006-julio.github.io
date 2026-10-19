@@ -1,15 +1,14 @@
 import {
-    getAuth,
-    onAuthStateChanged,
-    signOut
+   onAuthStateChanged,
+   signOut
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 import {
-initializeApp
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+   auth,
+   db
+} from "./firebase-alumnos.js";
 
 import {
-getFirestore,
 collection,
 addDoc,
 getDocs,
@@ -19,21 +18,6 @@ serverTimestamp
 // ==========================================
 // FIREBASE
 // ==========================================
-
-const firebaseConfig = {
-apiKey: "AIzaSyBaP5vVIw0b_3CRepIy328KIcitXlQtwFA",
-authDomain: "sistema-alumnos-xammar.firebaseapp.com",
-projectId: "sistema-alumnos-xammar",
-storageBucket: "sistema-alumnos-xammar.firebasestorage.app",
-messagingSenderId: "286883206743",
-appId: "1:286883206743:web:bebde00cff1bc372293512"
-};
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
 
 // ==========================================
 // DATOS

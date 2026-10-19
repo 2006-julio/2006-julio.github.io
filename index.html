@@ -32,12 +32,21 @@
         Cerrar sesión
     </button>
 
-    <a
-        href="./imprimirqr_todoslosalumnos.html"
-        class="boton-principal boton-impresion-total"
-    >
-        Imprimir QR de todos los alumnos
-    </a>
+    <div class="acciones-impresion-inicio">
+        <a
+            href="./imprimirqr_todoslosalumnos.html"
+            class="boton-principal boton-impresion-total"
+        >
+            Imprimir QR de todos los alumnos
+        </a>
+
+        <a
+            href="./pdf_alumnos_por_grado.html"
+            class="boton-principal boton-impresion-total boton-pdf-alumnos"
+        >
+            PDF de alumnos por grado y sección
+        </a>
+    </div>
 </header>
 
 
@@ -150,7 +159,84 @@
 
     <p id="mensaje"></p>
 
+    <button
+        type="button"
+        class="boton-secundario boton-importar-excel"
+        id="btnAbrirImportador"
+    >
+        Importar desde Excel
+    </button>
+
 </section>
+
+<dialog id="modalImportarExcel" class="modal-importar-excel">
+    <div class="modal-importar-contenido">
+        <header class="importador-encabezado">
+            <div>
+                <h2>Importar alumnos desde Excel</h2>
+                <p>Los datos se revisan antes de escribirlos en Firebase.</p>
+            </div>
+            <button type="button" id="btnCerrarImportador" class="boton-cerrar-importador" aria-label="Cerrar">
+                ×
+            </button>
+        </header>
+
+        <div class="importador-archivo">
+            <label for="archivoExcel">Archivo Excel (.xlsx, .xls o .xlsb)</label>
+            <input type="file" id="archivoExcel" accept=".xlsx,.xls,.xlsb">
+            <p id="nombreArchivoExcel">No se ha seleccionado un archivo.</p>
+            <button type="button" id="btnAnalizarExcel" class="boton-principal" disabled>
+                Analizar archivo y mostrar vista previa
+            </button>
+        </div>
+
+        <div id="panelVistaPreviaExcel" hidden>
+            <p class="aviso-importador">
+                Si una celda contiene “APELLIDOS,NOMBRES”, la parte anterior a la coma
+                se asigna a apellidos y la posterior a nombres. Revisa especialmente
+                estas columnas y corrige cualquier fila marcada antes de importar.
+                El DNI se usa para detectar duplicados, pero no se guarda porque no
+                forma parte del modelo actual de alumnos.
+            </p>
+            <div id="mapeosExcel" class="mapeos-excel"></div>
+            <div id="resumenImportacion" class="resumen-importacion"></div>
+            <p id="estadoImportacion" role="status"></p>
+            <progress id="progresoImportacion" class="progreso-generacion" hidden></progress>
+            <p id="errorImportacion" class="mensaje-error" role="alert"></p>
+
+            <div class="tabla-contenedor tabla-importacion">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Incluir</th>
+                            <th>Origen</th>
+                            <th>DNI</th>
+                            <th>Apellidos</th>
+                            <th>Nombres</th>
+                            <th>Grado</th>
+                            <th>Sección</th>
+                            <th>Teléfono</th>
+                            <th>Validación</th>
+                        </tr>
+                    </thead>
+                    <tbody id="filasVistaPreviaExcel"></tbody>
+                </table>
+            </div>
+
+            <div class="acciones-importador">
+                <button type="button" id="btnCancelarImportacion" class="boton-secundario">
+                    Cancelar
+                </button>
+                <button type="button" id="btnReintentarImportacion" class="boton-secundario" hidden>
+                    Reintentar filas fallidas
+                </button>
+                <button type="button" id="btnConfirmarImportacion" class="boton-principal" disabled>
+                    Confirmar importación
+                </button>
+            </div>
+        </div>
+    </div>
+</dialog>
 
 
 <!-- RESULTADO DEL REGISTRO -->
@@ -427,6 +513,8 @@
     type="module"
     src="./app.js"
 ></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script type="module" src="./importar-alumnos.js"></script>
 
 </body>
 

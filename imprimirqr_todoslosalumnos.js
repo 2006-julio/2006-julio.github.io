@@ -5,14 +5,18 @@ import {
 import {
   getFirestore,
   collection,
-  getDocs
+  documentId,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import {
   getAuth,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyBaP5vVIw0b_3CRepIy328KIcitXlQtwFA",
@@ -23,416 +27,286 @@ const firebaseConfig = {
   appId: "1:286883206743:web:bebde00cff1bc372293512"
 };
 
-
 const app = initializeApp(firebaseConfig);
-
 const db = getFirestore(app);
-
 const auth = getAuth(app);
-
 
 const contenedorHojasQR =
   document.getElementById("contenedorHojasQR");
-
 const estadoCarga =
   document.getElementById("estadoCarga");
-
 const resumen =
   document.getElementById("resumen");
-
 const mensajeError =
   document.getElementById("mensajeError");
-
+const btnGenerar =
+  document.getElementById("btnGenerar");
+const btnCancelar =
+  document.getElementById("btnCancelar");
 const btnImprimir =
   document.getElementById("btnImprimir");
-
+const progresoGeneracion =
+  document.getElementById("progresoGeneracion");
 const filtroGradoImpresion =
   document.getElementById("filtroGradoImpresion");
-
 const filtroSeccionImpresion =
   document.getElementById("filtroSeccionImpresion");
-
 const btnMostrarTodos =
   document.getElementById("btnMostrarTodos");
 
-let alumnosCargados = [];
+const alumnosPorLote = 100;
+let alumnosCargados = null;
+let autenticado = false;
+let generando = false;
+let cancelarSolicitado = false;
 
-
-/*
-  Verificar autenticación
-*/
 onAuthStateChanged(auth, (usuario) => {
-
   if (!usuario) {
-
     window.location.href = "./login.html";
-
     return;
   }
 
-  cargarTodosLosAlumnos();
-
+  autenticado = true;
+  btnGenerar.disabled = false;
 });
 
+btnGenerar.disabled = true;
+btnGenerar.addEventListener("click", iniciarGeneracion);
+btnCancelar.addEventListener("click", () => {
+  cancelarSolicitado = true;
+  estadoCarga.textContent = "Cancelando... espera a que termine el lote actual.";
+  btnCancelar.disabled = true;
+});
+btnImprimir.addEventListener("click", () => window.print());
+btnMostrarTodos.addEventListener("click", () => {
+  filtroGradoImpresion.value = "";
+  filtroSeccionImpresion.value = "";
+  invalidarDocumentoGenerado();
+});
+filtroGradoImpresion.addEventListener("change", invalidarDocumentoGenerado);
+filtroSeccionImpresion.addEventListener("change", invalidarDocumentoGenerado);
 
-/*
-  Obtener todos los alumnos
-*/
-async function cargarTodosLosAlumnos() {
+function invalidarDocumentoGenerado() {
+  if (generando) {
+    return;
+  }
+
+  contenedorHojasQR.replaceChildren();
+  btnImprimir.disabled = true;
+  resumen.textContent = "Filtros actualizados. Genera nuevamente el documento.";
+  estadoCarga.textContent = "Pulsa “Generar documento” para aplicar los filtros.";
+  btnGenerar.textContent = "Generar documento con filtros";
+  progresoGeneracion.hidden = true;
+  mensajeError.textContent = "";
+}
+
+async function iniciarGeneracion() {
+  if (!autenticado || generando) {
+    return;
+  }
+
+  const confirmado = window.confirm(
+    "Se cargarán los alumnos y se generarán 12 códigos QR por cada uno. " +
+    "Este proceso puede tomar varios minutos y consumir recursos del navegador. " +
+    "¿Deseas continuar?"
+  );
+
+  if (!confirmado) {
+    return;
+  }
+
+  generando = true;
+  cancelarSolicitado = false;
+  btnGenerar.disabled = true;
+  btnCancelar.disabled = false;
+  btnCancelar.hidden = false;
+  btnImprimir.disabled = true;
+  filtroGradoImpresion.disabled = true;
+  filtroSeccionImpresion.disabled = true;
+  btnMostrarTodos.disabled = true;
+  progresoGeneracion.hidden = false;
+  progresoGeneracion.removeAttribute("value");
+  mensajeError.textContent = "";
+  contenedorHojasQR.replaceChildren();
 
   try {
+    if (alumnosCargados === null) {
+      alumnosCargados = await cargarTodosLosAlumnos();
+      if (alumnosCargados === null) {
+        estadoCarga.textContent = "Generación cancelada.";
+        resumen.textContent = "No se generó el documento.";
+        return;
+      }
+    }
 
-    estadoCarga.textContent =
-      "Cargando alumnos desde Firebase...";
+    const alumnos = filtrarAlumnos(alumnosCargados);
+    if (alumnos.length === 0) {
+      estadoCarga.textContent = "No hay alumnos para los filtros seleccionados.";
+      resumen.textContent = "Alumnos: 0 | Hojas: 0 | QR: 0";
+      return;
+    }
 
+    progresoGeneracion.max = alumnos.length;
+    progresoGeneracion.value = 0;
 
-    const referencia =
-      collection(db, "alumnos");
+    const completado = await generarTodasLasHojas(alumnos);
+    if (!completado) {
+      contenedorHojasQR.replaceChildren();
+      estadoCarga.textContent = "Generación cancelada.";
+      resumen.textContent = "No se generó el documento.";
+      return;
+    }
 
+    resumen.textContent =
+      `Alumnos: ${alumnos.length} | Hojas: ${alumnos.length} | QR: ${alumnos.length * 12}`;
+    estadoCarga.textContent = "Documento listo para imprimir.";
+    btnImprimir.disabled = false;
+    btnGenerar.textContent = "Regenerar documento";
+  } catch (error) {
+    console.error(error);
+    contenedorHojasQR.replaceChildren();
+    estadoCarga.textContent = "No se pudo completar la generación.";
+    resumen.textContent = "Ocurrió un error al cargar los alumnos o crear los QR.";
+    mensajeError.textContent =
+      "Verifica la conexión e inténtalo nuevamente. Si el problema continúa, contacta al administrador.";
+  } finally {
+    generando = false;
+    btnGenerar.disabled = false;
+    btnCancelar.disabled = false;
+    btnCancelar.hidden = true;
+    filtroGradoImpresion.disabled = false;
+    filtroSeccionImpresion.disabled = false;
+    btnMostrarTodos.disabled = false;
+    progresoGeneracion.hidden = true;
+  }
+}
 
-    const resultado =
-      await getDocs(referencia);
+async function cargarTodosLosAlumnos() {
+  const alumnos = [];
+  const referencia = collection(db, "alumnos");
+  let ultimoDocumento = null;
 
+  estadoCarga.textContent = "Conectando con Firebase...";
 
-    const alumnos = [];
+  while (true) {
+    if (cancelarSolicitado) {
+      return null;
+    }
 
+    const restricciones = [
+      orderBy(documentId()),
+      limit(alumnosPorLote)
+    ];
+    if (ultimoDocumento) {
+      restricciones.push(startAfter(ultimoDocumento));
+    }
+
+    const resultado = await getDocs(query(referencia, ...restricciones));
+    if (resultado.empty) {
+      break;
+    }
 
     resultado.forEach((documento) => {
-
       const datos = documento.data();
-
-
       alumnos.push({
-
         id: documento.id,
-
         nombre: datos.nombre || "",
-
         apellido: datos.apellido || "",
-
         grado: datos.grado || "",
-
         seccion: datos.seccion || ""
-
       });
-
     });
 
+    ultimoDocumento = resultado.docs[resultado.docs.length - 1];
+    estadoCarga.textContent = `Cargando alumnos... ${alumnos.length} recibidos.`;
+    await permitirRepintado();
+  }
 
-    /*
-      Ordenar alumnos:
+  return alumnos;
+}
 
-      1. grado
-      2. sección
-      3. apellido
-      4. nombre
-    */
-    alumnos.sort((a, b) => {
+function filtrarAlumnos(alumnos) {
+  const grado = filtroGradoImpresion.value;
+  const seccion = filtroSeccionImpresion.value;
 
+  return alumnos
+    .filter((alumno) =>
+      (!grado || alumno.grado === grado) &&
+      (!seccion || alumno.seccion === seccion)
+    )
+    .sort((a, b) => {
       const gradoA = convertirGrado(a.grado);
       const gradoB = convertirGrado(b.grado);
-
       if (gradoA !== gradoB) {
         return gradoA - gradoB;
       }
 
-
-      const seccionA =
-        a.seccion.toUpperCase();
-
-      const seccionB =
-        b.seccion.toUpperCase();
-
-
-      if (seccionA !== seccionB) {
-
-        return seccionA.localeCompare(seccionB);
-
+      const porSeccion = a.seccion.localeCompare(b.seccion);
+      if (porSeccion !== 0) {
+        return porSeccion;
       }
 
-
-      const apellidoA =
-        a.apellido.toLowerCase();
-
-      const apellidoB =
-        b.apellido.toLowerCase();
-
-
-      if (apellidoA !== apellidoB) {
-
-        return apellidoA.localeCompare(apellidoB);
-
-      }
-
-
-      return a.nombre
-        .toLowerCase()
-        .localeCompare(
-          b.nombre.toLowerCase()
-        );
-
+      const porApellido = a.apellido.localeCompare(b.apellido);
+      return porApellido || a.nombre.localeCompare(b.nombre);
     });
+}
 
-
-    alumnosCargados = alumnos;
-
-    if (alumnos.length === 0) {
-
-      estadoCarga.textContent =
-        "No hay alumnos registrados.";
-
-      resumen.textContent =
-        "Alumnos: 0 | Hojas: 0 | QR: 0";
-
-      return;
+async function generarTodasLasHojas(alumnos) {
+  for (let indice = 0; indice < alumnos.length; indice += 1) {
+    if (cancelarSolicitado) {
+      return false;
     }
 
-
-    /*
-      Actualizar resumen
-    */
+    generarHojaAlumno(alumnos[indice]);
+    progresoGeneracion.value = indice + 1;
     estadoCarga.textContent =
-      "Alumnos cargados correctamente.";
-
-    actualizarImpresion();
-
-
-  } catch (error) {
-
-    console.error(error);
-
-
-    estadoCarga.textContent =
-      "Ocurrió un error al cargar los alumnos.";
-
-
-    mostrarError(
-      "No se pudieron cargar los alumnos desde Firebase."
-    );
-
+      `Generando códigos QR... alumno ${indice + 1} de ${alumnos.length}.`;
+    await permitirRepintado();
   }
 
+  return true;
 }
 
-
-/*
-  Generar una hoja A4 por alumno
-*/
-function generarTodasLasHojas(alumnos) {
-
-  contenedorHojasQR.innerHTML = "";
-
-
-  alumnos.forEach((alumno) => {
-
-    generarHojaAlumno(alumno);
-
-  });
-
-}
-
-
-function actualizarImpresion() {
-
-  const grado = filtroGradoImpresion.value;
-  const seccion = filtroSeccionImpresion.value;
-
-  const alumnosFiltrados = alumnosCargados.filter((alumno) => {
-    return (!grado || alumno.grado === grado) &&
-      (!seccion || alumno.seccion === seccion);
-  });
-
-  const cantidadAlumnos = alumnosFiltrados.length;
-  const cantidadHojas = alumnosFiltrados.length;
-  const cantidadQR = cantidadAlumnos * 12;
-
-  resumen.textContent =
-    `Alumnos: ${cantidadAlumnos} | ` +
-    `Hojas: ${cantidadHojas} | ` +
-    `QR: ${cantidadQR}`;
-
-  generarTodasLasHojas(alumnosFiltrados);
-
-  if (cantidadAlumnos === 0) {
-    estadoCarga.textContent =
-      "No hay alumnos para los filtros seleccionados.";
-    return;
-  }
-
-  estadoCarga.textContent =
-    "Bloque listo para imprimir.";
-}
-
-
-/*
-  Crear una hoja para un alumno
-*/
 function generarHojaAlumno(alumno) {
-
-  /*
-    Contenedor de la página A4
-  */
-  const hoja =
-    document.createElement("section");
-
+  const hoja = document.createElement("section");
   hoja.className = "hoja-qr hoja-qr-todos";
 
-
-  /* Información del alumno que también aparecerá en la hoja impresa. */
-  const informacionAdmin =
-    document.createElement("div");
-
-  informacionAdmin.className =
-    "informacion-admin";
-
-
+  const informacionAdmin = document.createElement("div");
+  informacionAdmin.className = "informacion-admin";
   informacionAdmin.textContent =
-    `${alumno.grado} - Sección ${alumno.seccion} | ` +
-    `${alumno.apellido}, ${alumno.nombre}`;
-
-
+    `${alumno.grado} - Sección ${alumno.seccion} | ${alumno.apellido}, ${alumno.nombre}`;
   hoja.appendChild(informacionAdmin);
 
+  for (let indice = 0; indice < 12; indice += 1) {
+    const tarjeta = document.createElement("div");
+    tarjeta.className = "tarjeta-qr";
 
-  /*
-    Crear los 12 QR
-  */
-  for (let i = 1; i <= 12; i++) {
+    const institucion = document.createElement("div");
+    institucion.className = "institucion-qr";
+    institucion.textContent = "I.E. LUIS FABIO XAMMAR JURADO";
 
-    const tarjeta =
-      document.createElement("div");
+    const contenedorQR = document.createElement("div");
+    contenedorQR.className = "codigo-qr";
 
-    tarjeta.className =
-      "tarjeta-qr";
-
-
-    /*
-      Nombre de la institución
-    */
-    const institucion =
-      document.createElement("div");
-
-    institucion.className =
-      "institucion-qr";
-
-    institucion.textContent =
-      "I.E. LUIS FABIO XAMMAR JURADO";
-
-
-    /*
-      Contenedor del QR
-    */
-    const contenedorQR =
-      document.createElement("div");
-
-    contenedorQR.className =
-      "codigo-qr";
-
-
-    tarjeta.appendChild(institucion);
-
-    tarjeta.appendChild(contenedorQR);
-
+    tarjeta.append(institucion, contenedorQR);
     hoja.appendChild(tarjeta);
 
-
-    /*
-      El contenido del QR es SOLO
-      el ID del documento Firebase.
-    */
     new QRCode(contenedorQR, {
-
       text: alumno.id,
-
       width: 120,
-
       height: 120,
-
       correctLevel: QRCode.CorrectLevel.M
-
     });
-
   }
 
-
-  /*
-    Agregar la hoja al documento
-  */
   contenedorHojasQR.appendChild(hoja);
-
 }
 
-
-/*
-  Convertir grado a número
-*/
 function convertirGrado(grado) {
-
-  const texto =
-    String(grado).toLowerCase();
-
-
-  if (texto.includes("1")) {
-    return 1;
-  }
-
-  if (texto.includes("2")) {
-    return 2;
-  }
-
-  if (texto.includes("3")) {
-    return 3;
-  }
-
-  if (texto.includes("4")) {
-    return 4;
-  }
-
-  if (texto.includes("5")) {
-    return 5;
-  }
-
-
-  return 99;
-
+  const numero = Number.parseInt(String(grado), 10);
+  return Number.isNaN(numero) ? 99 : numero;
 }
 
-
-/*
-  Mostrar error
-*/
-function mostrarError(mensaje) {
-
-  mensajeError.textContent = mensaje;
-
+function permitirRepintado() {
+  return new Promise((resolve) => window.setTimeout(resolve, 0));
 }
-
-
-/*
-  Botón imprimir
-*/
-btnImprimir.addEventListener("click", () => {
-
-  window.print();
-
-});
-
-
-filtroGradoImpresion.addEventListener(
-  "change",
-  actualizarImpresion
-);
-
-filtroSeccionImpresion.addEventListener(
-  "change",
-  actualizarImpresion
-);
-
-btnMostrarTodos.addEventListener(
-  "click",
-  () => {
-    filtroGradoImpresion.value = "";
-    filtroSeccionImpresion.value = "";
-    actualizarImpresion();
-  }
-);
