@@ -233,77 +233,138 @@ function limpiarGraficos() {
   chartFechas = null;
 }
 
-function descargarPdf() {
+async function descargarPdf() {
   const registros = obtenerRegistrosFiltrados();
-  if (registros.length === 0 || !window.jspdf?.jsPDF) {
+  if (registros.length === 0) {
+    mostrarErrorPdf("No hay registros que coincidan con los filtros seleccionados.");
     return;
   }
 
-  const grupos = agruparPorGradoSeccion(registros);
-  const pdf = new window.jspdf.jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
-  const ancho = pdf.internal.pageSize.getWidth();
-  const totalAlumnos = new Set(registros.map((registro) => texto(registro.alumnoId) || nombreAlumno(registro))).size;
-  pdf.setFont("helvetica", "bold");
-  pdf.setFontSize(18);
-  pdf.text("Reporte detallado de tardanzas", 36, 38);
-  pdf.setFont("helvetica", "normal");
-  pdf.setFontSize(9);
-  pdf.text(`Generado: ${new Intl.DateTimeFormat("es-PE", { dateStyle: "long", timeStyle: "short" }).format(new Date())}`, 36, 56);
-  pdf.text(`Periodo: ${fechaDesde.value || "Inicio"} a ${fechaHasta.value || "Actualidad"} | Grado: ${filtroGrado.value || "Todos"} | Sección: ${filtroSeccion.value || "Todas"}`, 36, 72);
-  pdf.setFont("helvetica", "bold");
-  pdf.text(`Tardanzas: ${registros.length}     Alumnos: ${totalAlumnos}     Grupos: ${grupos.length}`, 36, 91);
+  btnDescargar.disabled = true;
+  estado.textContent = "Preparando el PDF...";
+  estado.setAttribute("role", "status");
+  try {
+    const jsPDF = await cargarDependenciasPdf();
+    const grupos = agruparPorGradoSeccion(registros);
+    const pdf = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
 
-  let inicioTabla = 108;
-  const canvasGrupo = document.getElementById("graficoGrupos");
-  const canvasFechas = document.getElementById("graficoFechas");
-  if (canvasGrupo && canvasFechas && grupos.length) {
-    const chartAncho = (ancho - 90) / 2;
-    pdf.addImage(canvasGrupo.toDataURL("image/png"), "PNG", 36, 103, chartAncho, 150);
-    pdf.addImage(canvasFechas.toDataURL("image/png"), "PNG", 54 + chartAncho, 103, chartAncho, 150);
-    inicioTabla = 270;
+    const ancho = pdf.internal.pageSize.getWidth();
+    const totalAlumnos = new Set(registros.map((registro) => texto(registro.alumnoId) || nombreAlumno(registro))).size;
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(18);
+    pdf.text("Reporte detallado de tardanzas", 36, 38);
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(9);
+    pdf.text(`Generado: ${new Intl.DateTimeFormat("es-PE", { dateStyle: "long", timeStyle: "short" }).format(new Date())}`, 36, 56);
+    pdf.text(`Periodo: ${fechaDesde.value || "Inicio"} a ${fechaHasta.value || "Actualidad"} | Grado: ${filtroGrado.value || "Todos"} | Sección: ${filtroSeccion.value || "Todas"}`, 36, 72);
+    pdf.setFont("helvetica", "bold");
+    pdf.text(`Tardanzas: ${registros.length}     Alumnos: ${totalAlumnos}     Grupos: ${grupos.length}`, 36, 91);
+
+    let inicioTabla = 108;
+    const canvasGrupo = document.getElementById("graficoGrupos");
+    const canvasFechas = document.getElementById("graficoFechas");
+    if (canvasGrupo && canvasFechas && grupos.length) {
+      const chartAncho = (ancho - 90) / 2;
+      pdf.addImage(canvasGrupo.toDataURL("image/png"), "PNG", 36, 103, chartAncho, 150);
+      pdf.addImage(canvasFechas.toDataURL("image/png"), "PNG", 54 + chartAncho, 103, chartAncho, 150);
+      inicioTabla = 270;
+    }
+
+    grupos.forEach((grupo) => {
+      if (inicioTabla > pdf.internal.pageSize.getHeight() - 70) {
+        pdf.addPage();
+        inicioTabla = 42;
+      }
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(11);
+      pdf.text(`${grupo.grado} - Sección ${grupo.seccion} | ${grupo.registros.length} tardanza(s)`, 36, inicioTabla);
+      pdf.autoTable({
+        startY: inicioTabla + 7,
+        margin: { left: 36, right: 36 },
+        head: [["Alumno", "Grado / sección", "Fecha / hora", "Auxiliar", "Teléfono apoderado", "Escaneo"]],
+        body: grupo.registros.map((registro) => [
+          nombreAlumno(registro),
+          `${texto(registro.grado) || "Sin grado"} / ${texto(registro.seccion) || "Sin sección"}`,
+          `${formatearFecha(obtenerFecha(registro))} ${texto(registro.hora) || ""}`,
+          texto(registro.auxiliarNombre) || "Sin auxiliar",
+          texto(registro.telefonoApoderado) || "Sin número registrado",
+          formatearFechaHora(registro.fechaHoraEscaneo) || "No disponible"
+        ]),
+        styles: { fontSize: 7, cellPadding: 4, overflow: "linebreak" },
+        headStyles: { fillColor: [30, 64, 81] },
+        columnStyles: {
+          0: { cellWidth: 130 },
+          1: { cellWidth: 95 },
+          2: { cellWidth: 90 },
+          3: { cellWidth: 100 },
+          4: { cellWidth: 115 },
+          5: { cellWidth: "auto" }
+        },
+        didDrawPage: () => {
+          pdf.setFontSize(8);
+          pdf.setFont("helvetica", "normal");
+          pdf.text("Sistema de registro | Reporte de tardanzas", 36, pdf.internal.pageSize.getHeight() - 18);
+        }
+      });
+      inicioTabla = pdf.lastAutoTable.finalY + 24;
+    });
+
+    const sufijoFecha = new Date().toISOString().slice(0, 10);
+    pdf.save(`reporte-tardanzas-${sufijoFecha}.pdf`);
+    estado.textContent = "PDF generado y descargado correctamente.";
+    estado.setAttribute("role", "status");
+  } catch (error) {
+    console.error("Error al generar el PDF del reporte de tardanzas:", error);
+    mostrarErrorPdf(error instanceof Error
+      ? error.message
+      : "No se pudo generar el PDF. Revisa la consola del navegador para ver el detalle del error.");
+  } finally {
+    btnDescargar.disabled = obtenerRegistrosFiltrados().length === 0;
+  }
+}
+
+async function cargarDependenciasPdf() {
+  if (typeof window.jspdf?.jsPDF !== "function") {
+    await cargarScriptPdf(
+      "https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"
+    );
   }
 
-  grupos.forEach((grupo) => {
-    if (inicioTabla > pdf.internal.pageSize.getHeight() - 70) {
-      pdf.addPage();
-      inicioTabla = 42;
-    }
-    pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(11);
-    pdf.text(`${grupo.grado} - Sección ${grupo.seccion} | ${grupo.registros.length} tardanza(s)`, 36, inicioTabla);
-    pdf.autoTable({
-      startY: inicioTabla + 7,
-      margin: { left: 36, right: 36 },
-      head: [["Alumno", "Grado / sección", "Fecha / hora", "Auxiliar", "Teléfono apoderado", "Escaneo"]],
-      body: grupo.registros.map((registro) => [
-        nombreAlumno(registro),
-        `${texto(registro.grado) || "Sin grado"} / ${texto(registro.seccion) || "Sin sección"}`,
-        `${formatearFecha(obtenerFecha(registro))} ${texto(registro.hora) || ""}`,
-        texto(registro.auxiliarNombre) || "Sin auxiliar",
-        texto(registro.telefonoApoderado) || "Sin número registrado",
-        formatearFechaHora(registro.fechaHoraEscaneo) || "No disponible"
-      ]),
-      styles: { fontSize: 7, cellPadding: 4, overflow: "linebreak" },
-      headStyles: { fillColor: [30, 64, 81] },
-      columnStyles: {
-        0: { cellWidth: 130 },
-        1: { cellWidth: 95 },
-        2: { cellWidth: 90 },
-        3: { cellWidth: 100 },
-        4: { cellWidth: 115 },
-        5: { cellWidth: "auto" }
-      },
-      didDrawPage: () => {
-        pdf.setFontSize(8);
-        pdf.setFont("helvetica", "normal");
-        pdf.text("Sistema de registro | Reporte de tardanzas", 36, pdf.internal.pageSize.getHeight() - 18);
-      }
-    });
-    inicioTabla = pdf.lastAutoTable.finalY + 24;
-  });
+  const jsPDF = window.jspdf?.jsPDF;
+  if (typeof jsPDF !== "function") {
+    throw new Error("No se pudo cargar jsPDF. Revisa tu conexión a internet y vuelve a intentarlo.");
+  }
 
-  const sufijoFecha = new Date().toISOString().slice(0, 10);
-  pdf.save(`reporte-tardanzas-${sufijoFecha}.pdf`);
+  const documento = new jsPDF();
+  if (typeof documento.autoTable !== "function") {
+    await cargarScriptPdf(
+      "https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"
+    );
+  }
+
+  if (typeof new jsPDF().autoTable !== "function") {
+    throw new Error("No se pudo cargar AutoTable. Revisa tu conexión a internet y vuelve a intentarlo.");
+  }
+
+  return jsPDF;
+}
+
+function cargarScriptPdf(src) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.onload = resolve;
+    script.onerror = () => {
+      script.remove();
+      reject(new Error("No se pudieron cargar las librerías para generar el PDF. Revisa tu conexión a internet y vuelve a intentarlo."));
+    };
+    document.head.appendChild(script);
+  });
+}
+
+function mostrarErrorPdf(mensaje) {
+  estado.textContent = mensaje;
+  estado.setAttribute("role", "alert");
 }
 
 function obtenerFecha(registro) {
