@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Consulta y administra los registros de tardanzas.">
+  <title>Administrar tardanzas | Control de asistencia</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body class="pagina-reporte">
+  <main class="pagina-reporte-tardanzas">
+    <header class="encabezado encabezado-reporte no-imprimir">
+      <div>
+        <p class="etiqueta-reporte">Control de asistencia</p>
+        <h1>Administrar tardanzas</h1>
+        <p>Busca, filtra y elimina registros de tardanza.</p>
+      </div>
+      <div class="acciones-reporte">
+        <a href="./index.html" class="boton-secundario">Volver</a>
+        <button type="button" id="btnActualizarTardanzas" class="boton-secundario">Actualizar datos</button>
+      </div>
+    </header>
+
+    <section class="tarjeta no-imprimir" aria-label="Filtros de tardanzas">
+      <div class="filtros-reporte filtros-administrar-tardanzas">
+        <div>
+          <label for="fechaDesde">Desde</label>
+          <input id="fechaDesde" type="date">
+        </div>
+        <div>
+          <label for="fechaHasta">Hasta</label>
+          <input id="fechaHasta" type="date">
+        </div>
+        <div>
+          <label for="filtroGrado">Grado</label>
+          <select id="filtroGrado">
+            <option value="">Todos los grados</option>
+          </select>
+        </div>
+        <div>
+          <label for="filtroSeccion">Sección</label>
+          <select id="filtroSeccion">
+            <option value="">Todas las secciones</option>
+          </select>
+        </div>
+        <div>
+          <label for="buscarNombre">Nombre del alumno</label>
+          <input id="buscarNombre" type="search" placeholder="Buscar por nombre o apellido">
+        </div>
+      </div>
+      <p id="estadoTardanzas" class="estado-reporte" role="status" aria-live="polite">Comprobando sesión...</p>
+    </section>
+
+    <section class="tarjeta" aria-label="Registros de tardanzas">
+      <h2>Registros de tardanzas</h2>
+      <p id="resumenTardanzas">No hay datos para mostrar.</p>
+      <div class="tabla-reporte">
+        <table>
+          <thead>
+            <tr>
+              <th>Alumno</th>
+              <th>Grado</th>
+              <th>Sección</th>
+              <th>Fecha y hora</th>
+              <th>Auxiliar</th>
+              <th class="no-imprimir">Acción</th>
+            </tr>
+          </thead>
+          <tbody id="listaTardanzas">
+            <tr><td colspan="6">Cargando registros...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="./administrar_tardanzas.js"></script>
+</body>
+</html>

@@ -167,6 +167,14 @@ background: #a33c24;
 background: #842f1d;
 }
 
+.boton-administrar-tardanzas {
+background: #166534;
+}
+
+.boton-administrar-tardanzas:hover {
+background: #14532d;
+}
+
 .controles-impresion button:disabled,
 .controles-pdf button:disabled {
 opacity: 0.55;
@@ -751,6 +759,29 @@ body {
 .filtros-reporte {
   display: grid;
   grid-template-columns: repeat(4, minmax(140px, 1fr));
+}
+
+.filtros-administrar-tardanzas {
+  grid-template-columns: repeat(5, minmax(140px, 1fr));
+}
+
+.boton-eliminar-tardanza {
+  padding: 8px 12px;
+  border: 1px solid #b42318;
+  border-radius: 7px;
+  background: #fff;
+  color: #b42318;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.boton-eliminar-tardanza:hover:not(:disabled) {
+  background: #fef3f2;
+}
+
+.boton-eliminar-tardanza:disabled {
+  opacity: 0.6;
+  cursor: wait;
 }
 
 .filtros-reporte .boton-secundario {
