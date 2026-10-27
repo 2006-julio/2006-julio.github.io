@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Reporte y análisis de tardanzas por grado, sección y periodo.">
+  <title>Reporte de tardanzas | Control de asistencia</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body class="pagina-reporte">
+  <main class="pagina-reporte-tardanzas">
+    <header class="encabezado encabezado-reporte no-imprimir">
+      <div>
+        <p class="etiqueta-reporte">Control de asistencia</p>
+        <h1>Reporte de tardanzas</h1>
+        <p>Consulta y analiza los registros por periodo, grado y sección.</p>
+      </div>
+      <div class="acciones-reporte">
+        <a href="./index.html" class="boton-secundario">Volver</a>
+        <button type="button" id="btnActualizarReporte" class="boton-secundario">Actualizar datos</button>
+        <button type="button" id="btnDescargarReporte" class="boton-principal boton-reporte-tardanzas" disabled>
+          Descargar reporte PDF
+        </button>
+      </div>
+    </header>
+
+    <section class="tarjeta no-imprimir" aria-label="Filtros del reporte">
+      <div class="filtros-reporte">
+        <div>
+          <label for="fechaDesde">Desde</label>
+          <input id="fechaDesde" type="date">
+        </div>
+        <div>
+          <label for="fechaHasta">Hasta</label>
+          <input id="fechaHasta" type="date">
+        </div>
+        <div>
+          <label for="filtroGradoReporte">Grado</label>
+          <select id="filtroGradoReporte">
+            <option value="">Todos los grados</option>
+          </select>
+        </div>
+        <div>
+          <label for="filtroSeccionReporte">Sección</label>
+          <select id="filtroSeccionReporte">
+            <option value="">Todas las secciones</option>
+          </select>
+        </div>
+      </div>
+      <p id="estadoReporte" class="estado-reporte" role="status" aria-live="polite">Comprobando sesión...</p>
+    </section>
+
+    <section class="resumen-reporte" aria-label="Resumen">
+      <div class="indicador-reporte">
+        <span>Registros de tardanza</span>
+        <strong id="totalRegistros">0</strong>
+      </div>
+      <div class="indicador-reporte">
+        <span>Alumnos registrados</span>
+        <strong id="totalAlumnos">0</strong>
+      </div>
+      <div class="indicador-reporte">
+        <span>Grupos con registros</span>
+        <strong id="totalGrupos">0</strong>
+      </div>
+    </section>
+
+    <section class="graficos-reporte" aria-label="Diagramas del reporte">
+      <article class="tarjeta">
+        <h2>Tardanzas por grado y sección</h2>
+        <div class="grafico-reporte"><canvas id="graficoGrupos" aria-label="Gráfico de tardanzas por grupo"></canvas></div>
+      </article>
+      <article class="tarjeta">
+        <h2>Registros por fecha</h2>
+        <div class="grafico-reporte"><canvas id="graficoFechas" aria-label="Gráfico de tardanzas por fecha"></canvas></div>
+      </article>
+    </section>
+
+    <section class="tarjeta">
+      <h2>Detalle por grado y sección</h2>
+      <p id="resumenDetalle">No hay datos para mostrar.</p>
+      <div id="detalleGrupos"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
+  <script type="module" src="./reporte_tardanzas.js"></script>
+</body>
+</html>

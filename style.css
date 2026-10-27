@@ -152,11 +152,19 @@ white-space: nowrap;
 }
 
 .boton-pdf-alumnos {
-background: #0f766e;
+background: #0369a1;
 }
 
 .boton-pdf-alumnos:hover {
-background: #115e59;
+background: #075985;
+}
+
+.boton-reporte-tardanzas {
+background: #a33c24;
+}
+
+.boton-reporte-tardanzas:hover {
+background: #842f1d;
 }
 
 .controles-impresion button:disabled,
@@ -662,6 +670,329 @@ body {
     }
 }
 
+/* ==========================================
+   REPORTE DE TARDANZAS
+   ========================================== */
+
+.pagina-reporte-tardanzas {
+  max-width: 1360px;
+  margin: 0 auto;
+  color: #172b3a;
+}
+
+.encabezado-reporte {
+  align-items: center;
+  margin: 0 0 26px;
+  padding: 8px 0 22px;
+  border-bottom: 1px solid #dce5eb;
+}
+
+.encabezado-reporte h1 {
+  margin: 0;
+  color: #17384a;
+  font-size: clamp(28px, 4vw, 36px);
+  letter-spacing: -0.035em;
+}
+
+.encabezado-reporte p {
+  margin: 8px 0 0;
+  color: #657987;
+}
+
+.encabezado-reporte .etiqueta-reporte {
+  margin: 0 0 8px;
+  color: #0369a1;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.acciones-reporte,
+.filtros-reporte {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+}
+
+.acciones-reporte .boton-principal,
+.acciones-reporte .boton-secundario {
+  width: auto;
+  min-height: 42px;
+  margin: 0;
+  padding: 10px 16px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.acciones-reporte .boton-principal {
+  border: 1px solid #0369a1;
+  background: #0369a1;
+}
+
+.acciones-reporte .boton-principal:hover:not(:disabled) {
+  background: #075985;
+  transform: translateY(-1px);
+}
+
+.acciones-reporte .boton-secundario {
+  border-color: #cbd7de;
+  color: #294453;
+}
+
+.acciones-reporte .boton-secundario:hover {
+  border-color: #94aab6;
+  background: #f5f8fa;
+}
+
+.filtros-reporte {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+}
+
+.filtros-reporte .boton-secundario {
+  min-height: 42px;
+}
+
+.pagina-reporte-tardanzas .tarjeta {
+  padding: 24px;
+  border: 1px solid #e1e9ee;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(27, 55, 71, 0.06);
+}
+
+.pagina-reporte-tardanzas .tarjeta h2 {
+  margin-bottom: 20px;
+  color: #234354;
+  font-size: 18px;
+  letter-spacing: -0.015em;
+}
+
+.pagina-reporte-tardanzas input,
+.pagina-reporte-tardanzas select {
+  min-height: 44px;
+  border-color: #d3dee5;
+  border-radius: 8px;
+  color: #213b4a;
+}
+
+.pagina-reporte-tardanzas input:focus,
+.pagina-reporte-tardanzas select:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.14);
+}
+
+.pagina-reporte-tardanzas label {
+  color: #385362;
+  font-size: 13px;
+}
+
+.estado-reporte {
+  min-height: 1.5em;
+  margin: 18px 0 0;
+  color: #657987;
+  font-size: 13px;
+}
+
+.estado-reporte[role="alert"] {
+  color: #b42318;
+}
+
+.resumen-reporte {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.indicador-reporte {
+  padding: 20px 22px;
+  border: 1px solid #e1e9ee;
+  border-left: 4px solid #0284c7;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(27, 55, 71, 0.045);
+}
+
+.indicador-reporte span {
+  display: block;
+  color: #657987;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.indicador-reporte strong {
+  display: block;
+  margin-top: 8px;
+  color: #17384a;
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.graficos-reporte {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.grafico-reporte {
+  min-width: 0;
+  height: 300px;
+}
+
+.grafico-reporte canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+#resumenDetalle {
+  margin-top: -8px;
+  color: #657987;
+  font-size: 14px;
+}
+
+.grupo-tardanzas {
+  margin: 26px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid #e1e9ee;
+}
+
+.grupo-tardanzas h3 {
+  margin: 0 0 6px;
+  color: #234354;
+  font-size: 17px;
+}
+
+.grupo-tardanzas p {
+  margin: 4px 0 14px;
+  color: #657987;
+  font-size: 13px;
+}
+
+.tabla-reporte {
+  overflow-x: auto;
+  border: 1px solid #e1e9ee;
+  border-radius: 10px;
+}
+
+.tabla-reporte table {
+  min-width: 900px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.tabla-reporte thead {
+  background: #f2f6f8;
+}
+
+.tabla-reporte th {
+  padding: 13px 14px;
+  color: #385362;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tabla-reporte td {
+  padding: 13px 14px;
+  color: #294453;
+  font-size: 13px;
+  vertical-align: top;
+}
+
+.tabla-reporte tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.tabla-reporte tbody tr:hover {
+  background: #f8fafb;
+}
+
+.dato-secundario {
+  display: block;
+  margin-top: 4px;
+  color: #718592;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 800px) {
+  .filtros-reporte,
+  .graficos-reporte {
+    grid-template-columns: 1fr;
+  }
+
+  .encabezado-reporte {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .acciones-reporte {
+    width: 100%;
+  }
+
+  .resumen-reporte {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .indicador-reporte {
+    padding: 16px;
+  }
+
+  .grafico-reporte {
+    height: 260px;
+  }
+}
+
+@media (max-width: 560px) {
+  body.pagina-reporte {
+    padding: 18px 14px;
+  }
+
+  .acciones-reporte {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .acciones-reporte .boton-principal {
+    grid-column: 1 / -1;
+  }
+
+  .resumen-reporte {
+    grid-template-columns: 1fr;
+  }
+
+  .pagina-reporte-tardanzas .tarjeta {
+    padding: 18px;
+  }
+}
+
+@media print {
+  body.pagina-reporte .no-imprimir {
+    display: none !important;
+  }
+
+  body.pagina-reporte .pagina-reporte-tardanzas {
+    max-width: none;
+  }
+
+  body.pagina-reporte .tarjeta,
+  body.pagina-reporte .indicador-reporte {
+    box-shadow: none;
+    border-color: #d5dce1;
+  }
+
+  body.pagina-reporte .grupo-tardanzas {
+    break-inside: avoid;
+  }
+}
+
 /*ESTILOS DE EDITAR ALUMNO HTML*/
 
 /* =========================
@@ -1111,6 +1442,1328 @@ margin: 10px 0;
         border: 1px dashed #777;
     }
 
+}
+
+/* PANEL ADMINISTRATIVO */
+
+body.inicio-administrativo {
+    min-height: 100vh;
+    padding: clamp(20px, 4vw, 48px);
+    background:
+      radial-gradient(ellipse at 12% 0%, rgba(2, 132, 199, 0.08), transparent 34rem),
+      #f3f6f8;
+    color: #1b3442;
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.inicio-administrativo .contenedor {
+    width: min(100%, 1380px);
+    max-width: 1380px;
+}
+
+.inicio-administrativo .encabezado {
+    align-items: flex-start;
+    margin-bottom: 28px;
+    padding: 8px 0 24px;
+    border-bottom: 1px solid #dce5e9;
+}
+
+.inicio-administrativo .encabezado-titulo {
+    max-width: 560px;
+}
+
+.inicio-administrativo .encabezado h1 {
+    color: #17384a;
+    font-size: clamp(30px, 4vw, 40px);
+    letter-spacing: -0.045em;
+    line-height: 1.12;
+}
+
+.inicio-administrativo .encabezado p {
+    margin: 10px 0 0;
+    color: #657987;
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.inicio-administrativo .encabezado .etiqueta-panel,
+.inicio-administrativo .etiqueta-seccion {
+    margin: 0 0 8px;
+    color: #0369a1;
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.13em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.inicio-administrativo .acciones-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.inicio-administrativo .acciones-impresion-inicio {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 9px;
+}
+
+.inicio-administrativo .acciones-impresion-inicio .boton-impresion-total {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 13px;
+    border: 1px solid #cbd9df;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(27, 52, 66, 0.04);
+    color: #294858;
+    font-size: 12px;
+    font-weight: 650;
+    line-height: 1.35;
+    text-align: center;
+    text-decoration: none;
+    transition: border-color 150ms ease, background-color 150ms ease, transform 150ms ease;
+}
+
+.inicio-administrativo .acciones-impresion-inicio .boton-impresion-total:hover {
+    transform: translateY(-1px);
+    border-color: #9eb4bf;
+    background: #f8fbfc;
+}
+
+.inicio-administrativo .acciones-impresion-inicio .boton-pdf-alumnos,
+.inicio-administrativo .acciones-impresion-inicio .boton-reporte-tardanzas {
+    background: #fff;
+}
+
+.inicio-administrativo #btnCerrarSesion {
+    padding: 8px 13px;
+    border-color: transparent;
+    background: transparent;
+    color: #657987;
+    font-size: 13px;
+}
+
+.inicio-administrativo #btnCerrarSesion:hover {
+    border-color: #d3dee3;
+    background: #fff;
+    color: #294858;
+}
+
+.inicio-administrativo .tarjeta {
+    margin-bottom: 22px;
+    padding: clamp(20px, 3vw, 30px);
+    border: 1px solid #e0e8ec;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 8px 24px rgba(27, 55, 71, 0.055);
+}
+
+.inicio-administrativo .tarjeta h2 {
+    margin: 0;
+    color: #203f50;
+    font-size: 21px;
+    letter-spacing: -0.025em;
+}
+
+.inicio-administrativo .seccion-encabezado {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.inicio-administrativo .seccion-encabezado > div > p:last-child {
+    margin: 7px 0 0;
+    color: #71838d;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.inicio-administrativo .formulario {
+    gap: 18px 22px;
+}
+
+.inicio-administrativo .campo {
+    margin: 0;
+}
+
+.inicio-administrativo label {
+    margin-bottom: 7px;
+    color: #3a5664;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.inicio-administrativo label span {
+    color: #82919a;
+}
+
+.inicio-administrativo input,
+.inicio-administrativo select {
+    min-height: 45px;
+    padding: 10px 12px;
+    border: 1px solid #d3dee4;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #203b49;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.inicio-administrativo input::placeholder {
+    color: #9aa8af;
+}
+
+.inicio-administrativo input:focus,
+.inicio-administrativo select:focus {
+    outline: none;
+    border-color: #0284c7;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.14);
+}
+
+.inicio-administrativo button,
+.inicio-administrativo a {
+    font-family: inherit;
+}
+
+.inicio-administrativo .boton-principal {
+    border-radius: 8px;
+    background: #0369a1;
+    font-size: 14px;
+    font-weight: 650;
+    transition: background-color 150ms ease, transform 150ms ease;
+}
+
+.inicio-administrativo .boton-principal:hover:not(:disabled) {
+    background: #075985;
+}
+
+.inicio-administrativo .boton-secundario {
+    border-color: #cfdae0;
+    border-radius: 8px;
+    color: #355361;
+    font-size: 13px;
+    font-weight: 600;
+    transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.inicio-administrativo .boton-secundario:hover {
+    border-color: #aebfc7;
+    background: #f6f9fa;
+}
+
+.inicio-administrativo .boton-registrar {
+    width: min(100%, 280px);
+    min-height: 46px;
+    margin-top: 20px;
+}
+
+.inicio-administrativo #mensaje {
+    color: #355361;
+    font-size: 13px;
+}
+
+.inicio-administrativo .boton-importar-excel {
+    min-height: 40px;
+    margin-top: 18px;
+}
+
+.inicio-administrativo .lista-header {
+    margin-bottom: 22px;
+}
+
+.inicio-administrativo .lista-header h2 {
+    margin-bottom: 0;
+}
+
+.inicio-administrativo .lista-header #contador {
+    margin: 7px 0 0;
+    color: #355361;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.inicio-administrativo .lista-header .ayuda-lista {
+    margin: 6px 0 0;
+    color: #71838d;
+    font-size: 13px;
+}
+
+.inicio-administrativo .filtros {
+    grid-template-columns: minmax(240px, 2fr) minmax(140px, 1fr) minmax(140px, 1fr) auto;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding: 17px;
+    border: 1px solid #e5ecef;
+    border-radius: 10px;
+    background: #f7f9fa;
+}
+
+.inicio-administrativo .filtros label {
+    font-size: 12px;
+}
+
+.inicio-administrativo #btnLimpiarFiltros {
+    min-height: 45px;
+    white-space: nowrap;
+}
+
+.inicio-administrativo .tabla-contenedor {
+    border: 1px solid #e2e9ed;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.inicio-administrativo .tabla-contenedor table {
+    min-width: 1050px;
+}
+
+.inicio-administrativo .tabla-contenedor thead {
+    background: #f2f6f8;
+}
+
+.inicio-administrativo .tabla-contenedor th {
+    padding: 14px 13px;
+    color: #45606d;
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.inicio-administrativo .tabla-contenedor td {
+    padding: 13px;
+    color: #334e5b;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.inicio-administrativo .tabla-contenedor tbody tr {
+    transition: background-color 120ms ease;
+}
+
+.inicio-administrativo .tabla-contenedor tbody tr:hover {
+    background: #f7fafb;
+}
+
+.inicio-administrativo .tabla-contenedor tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.inicio-administrativo .nombre-alumno {
+    color: #203f50;
+    font-weight: 650;
+}
+
+.inicio-administrativo .id-tabla {
+    color: #71838d;
+    font-size: 11px;
+}
+
+.inicio-administrativo .sin-telefono {
+    color: #84939b;
+    font-style: normal;
+}
+
+.inicio-administrativo .acciones {
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.inicio-administrativo .accion {
+    padding: 6px 9px;
+    border-color: #d6e0e5;
+    border-radius: 6px;
+    color: #355361;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.inicio-administrativo .accion:hover {
+    border-color: #aebfc7;
+    background: #eef4f6;
+}
+
+.inicio-administrativo .accion-eliminar {
+    border-color: #f0d7d4;
+    color: #a33c36;
+}
+
+.inicio-administrativo .accion-eliminar:hover {
+    border-color: #e6b9b4;
+    background: #fff5f4;
+}
+
+.inicio-administrativo .resultado {
+    border-color: #bfdbfe;
+    background: #f8fbff;
+}
+
+.inicio-administrativo .resultado-header p {
+    margin: 8px 0 0;
+    color: #657987;
+}
+
+.inicio-administrativo .datos-registrados {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 18px;
+    max-width: none;
+    margin-top: 20px;
+}
+
+.inicio-administrativo .datos-registrados p {
+    margin: 0;
+    padding: 11px 13px;
+    border-radius: 8px;
+    background: #f1f8fd;
+    color: #45606d;
+    font-size: 13px;
+}
+
+.inicio-administrativo .datos-registrados strong {
+    color: #294858;
+}
+
+.inicio-administrativo .id {
+    color: #0369a1;
+    overflow-wrap: anywhere;
+}
+
+.inicio-administrativo #qrcode {
+    margin-top: 22px;
+}
+
+.inicio-administrativo .modal {
+    padding: 20px;
+    background: rgba(15, 32, 42, 0.55);
+    backdrop-filter: blur(3px);
+}
+
+.inicio-administrativo .modal-contenido {
+    border: 1px solid #e0e8ec;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 20px 60px rgba(19, 43, 56, 0.2);
+}
+
+.inicio-administrativo .modal-contenido h2 {
+    color: #203f50;
+    font-size: 21px;
+}
+
+.inicio-administrativo .cerrar {
+    color: #71838d;
+}
+
+.inicio-administrativo .modal-importar-excel {
+    border: 1px solid #e0e8ec;
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(19, 43, 56, 0.24);
+}
+
+.inicio-administrativo .modal-importar-excel::backdrop {
+    background: rgba(15, 32, 42, 0.58);
+    backdrop-filter: blur(3px);
+}
+
+.inicio-administrativo .modal-importar-contenido {
+    padding: clamp(18px, 3vw, 30px);
+}
+
+.inicio-administrativo .importador-encabezado h2 {
+    margin: 0 0 6px;
+}
+
+.inicio-administrativo .importador-archivo {
+    border: 1px solid #e5ecef;
+    border-radius: 10px;
+    background: #f7f9fa;
+}
+
+.inicio-administrativo .aviso-importador {
+    border-color: #d4e5ed;
+    border-radius: 9px;
+    background: #f2f8fb;
+    color: #355361;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.inicio-administrativo :focus-visible {
+    outline: 3px solid rgba(2, 132, 199, 0.4);
+    outline-offset: 2px;
+}
+
+@media (max-width: 1050px) {
+    .inicio-administrativo .encabezado {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 18px;
+    }
+
+    .inicio-administrativo .acciones-panel {
+      align-items: stretch;
+    }
+
+    .inicio-administrativo .acciones-impresion-inicio {
+      justify-content: flex-start;
+    }
+
+    .inicio-administrativo .acciones-impresion-inicio .boton-impresion-total {
+      flex: 1 1 200px;
+    }
+
+    .inicio-administrativo #btnCerrarSesion {
+      align-self: flex-end;
+    }
+}
+
+@media (max-width: 800px) {
+    body.inicio-administrativo {
+      padding: 22px 18px;
+    }
+
+    .inicio-administrativo .filtros {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .inicio-administrativo .filtros .busqueda {
+      grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 560px) {
+    body.inicio-administrativo {
+      padding: 16px 12px;
+    }
+
+    .inicio-administrativo .encabezado {
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+    }
+
+    .inicio-administrativo .acciones-impresion-inicio {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .inicio-administrativo .acciones-impresion-inicio .boton-impresion-total {
+      width: 100%;
+    }
+
+    .inicio-administrativo .tarjeta {
+      margin-bottom: 16px;
+      padding: 19px 16px;
+      border-radius: 12px;
+    }
+
+    .inicio-administrativo .formulario {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .inicio-administrativo .boton-registrar {
+      width: 100%;
+    }
+
+    .inicio-administrativo .filtros {
+      grid-template-columns: 1fr;
+      padding: 13px;
+    }
+
+    .inicio-administrativo .filtros .busqueda {
+      grid-column: auto;
+    }
+
+    .inicio-administrativo #btnLimpiarFiltros {
+      width: 100%;
+    }
+
+    .inicio-administrativo .datos-registrados {
+      grid-template-columns: 1fr;
+    }
+
+    .inicio-administrativo .modal {
+      padding: 10px;
+    }
+}
+
+/* SISTEMA VISUAL COMPARTIDO */
+
+:root {
+    color-scheme: light;
+    --color-primario: #0369a1;
+    --color-primario-oscuro: #075985;
+    --color-texto: #203b49;
+    --color-texto-suave: #657987;
+    --color-borde: #dce5e9;
+    --color-fondo: #f3f6f8;
+    --color-superficie: #fff;
+    --radio-control: 8px;
+    --radio-tarjeta: 14px;
+    --sombra-tarjeta: 0 8px 24px rgba(27, 55, 71, 0.06);
+    --anillo-enfoque: 0 0 0 3px rgba(2, 132, 199, 0.14);
+}
+
+@media screen {
+    body {
+      background: var(--color-fondo);
+      color: var(--color-texto);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: #203f50;
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+    }
+
+    .contenedor {
+      width: min(100%, 1160px);
+    }
+
+    .tarjeta {
+      border: 1px solid #e0e8ec;
+      border-radius: var(--radio-tarjeta);
+      box-shadow: var(--sombra-tarjeta);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    input,
+    select,
+    textarea {
+      border-color: #d3dee4;
+      border-radius: var(--radio-control);
+      color: var(--color-texto);
+      transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--color-primario);
+      box-shadow: var(--anillo-enfoque);
+    }
+
+    label {
+      color: #385362;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .boton-principal {
+      border-radius: var(--radio-control);
+      background: var(--color-primario);
+      transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
+    }
+
+    .boton-principal:hover:not(:disabled) {
+      background: var(--color-primario-oscuro);
+    }
+
+    .boton-secundario {
+      border-color: #cbd9df;
+      border-radius: var(--radio-control);
+      color: #355361;
+      transition: background-color 150ms ease, border-color 150ms ease;
+    }
+
+    .boton-secundario:hover:not(:disabled) {
+      border-color: #aebfc7;
+      background: #f6f9fa;
+    }
+
+    button:disabled,
+    .boton-principal:disabled {
+      cursor: not-allowed;
+      opacity: 0.58;
+    }
+
+    a {
+      color: #0369a1;
+    }
+
+    :focus-visible {
+      outline: 3px solid rgba(2, 132, 199, 0.4);
+      outline-offset: 2px;
+    }
+
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    thead {
+      background: #f2f6f8;
+    }
+
+    th {
+      color: #45606d;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    td {
+      color: #334e5b;
+    }
+
+    tbody tr {
+      transition: background-color 120ms ease;
+    }
+
+    tbody tr:hover {
+      background: #f7fafb;
+    }
+
+    /* Acceso */
+    body.pagina-login {
+      background:
+        radial-gradient(ellipse at 15% 15%, rgba(2, 132, 199, 0.1), transparent 28rem),
+        var(--color-fondo);
+    }
+
+    .pagina-login .contenedor-login {
+      padding: 28px;
+    }
+
+    .pagina-login .login-card {
+      max-width: 440px;
+      padding: clamp(28px, 5vw, 42px);
+      border: 1px solid #e0e8ec;
+      border-radius: 18px;
+      box-shadow: 0 18px 48px rgba(27, 55, 71, 0.1);
+    }
+
+    .pagina-login .login-header {
+      margin-bottom: 30px;
+    }
+
+    .pagina-login .login-header h1 {
+      margin: 0;
+      color: #17384a;
+      font-size: 28px;
+      letter-spacing: -0.04em;
+    }
+
+    .pagina-login .login-header p {
+      margin-top: 8px;
+      color: var(--color-texto-suave);
+    }
+
+    .pagina-login .login-card .campo {
+      margin-bottom: 20px;
+    }
+
+    .pagina-login .login-card input {
+      min-height: 46px;
+      padding: 11px 13px;
+    }
+
+    .pagina-login .login-card .boton-principal {
+      min-height: 46px;
+      margin-top: 5px;
+    }
+
+    .pagina-login .mensaje-login {
+      color: #a33c36;
+      font-size: 13px;
+    }
+
+    /* Gestión de alumnos */
+    .pagina-editar-alumno .encabezado {
+      display: block;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--color-borde);
+    }
+
+    .pagina-editar-alumno .encabezado h1,
+    .pagina-eliminar-alumno .cabecera-edicion h1 {
+      margin: 0;
+      color: #17384a;
+      font-size: clamp(28px, 4vw, 36px);
+    }
+
+    .pagina-editar-alumno .encabezado p,
+    .pagina-eliminar-alumno .cabecera-edicion > div > p {
+      margin: 8px 0 0;
+      color: var(--color-texto-suave);
+    }
+
+    .pagina-editar-alumno .tarjeta,
+    .pagina-eliminar-alumno .tarjeta {
+      padding: clamp(20px, 3vw, 30px);
+    }
+
+    .pagina-editar-alumno .tarjeta h2,
+    .pagina-eliminar-alumno .tarjeta h2 {
+      margin-top: 0;
+      color: #203f50;
+    }
+
+    .pagina-editar-alumno .texto-ayuda,
+    .pagina-eliminar-alumno .texto-ayuda {
+      margin: 7px 0 18px;
+      color: var(--color-texto-suave);
+      font-size: 13px;
+    }
+
+    .pagina-editar-alumno .busqueda-edicion input,
+    .pagina-eliminar-alumno .busqueda-edicion input {
+      min-height: 44px;
+      padding: 10px 12px;
+    }
+
+    .pagina-editar-alumno .busqueda-edicion .campo,
+    .pagina-eliminar-alumno .busqueda-edicion .campo {
+      flex: 1;
+      min-width: 0;
+      margin: 0;
+    }
+
+    .pagina-editar-alumno .boton-buscar,
+    .pagina-eliminar-alumno .boton-buscar {
+      min-height: 44px;
+      padding: 10px 18px;
+    }
+
+    .pagina-editar-alumno .cabecera-edicion {
+      padding-bottom: 14px;
+      border-color: #e4ebee;
+    }
+
+    .pagina-editar-alumno .cabecera-edicion p {
+      color: var(--color-texto-suave);
+    }
+
+    .pagina-editar-alumno .botones-edicion,
+    .pagina-eliminar-alumno .botones-edicion {
+      align-items: center;
+    }
+
+    .pagina-editar-alumno .botones-edicion .boton-principal,
+    .pagina-editar-alumno .botones-edicion .boton-secundario,
+    .pagina-eliminar-alumno .botones-edicion .boton-secundario {
+      min-height: 44px;
+      margin-top: 0;
+    }
+
+    .pagina-editar-alumno .datos-actualizados,
+    .pagina-eliminar-alumno .datos-actualizados {
+      border: 1px solid #dfe9e5;
+      border-radius: 10px;
+      background: #f5f9f7;
+    }
+
+    .pagina-eliminar-alumno .cabecera-edicion {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin: 0 0 24px;
+      padding: 0 0 20px;
+      border-color: var(--color-borde);
+    }
+
+    .pagina-eliminar-alumno .cabecera-edicion .boton-secundario {
+      flex: 0 0 auto;
+      text-decoration: none;
+    }
+
+    .pagina-eliminar-alumno .datos-alumno p {
+      border: 1px solid #e5ecef;
+      border-radius: 8px;
+      background: #f7f9fa;
+      color: #45606d;
+    }
+
+    .pagina-eliminar-alumno .advertencia-eliminacion {
+      border-color: #f1d8ac;
+      border-radius: 10px;
+      background: #fff9ed;
+      color: #714d1f;
+    }
+
+    .pagina-eliminar-alumno .advertencia-eliminacion h3 {
+      color: #714d1f;
+    }
+
+    .pagina-eliminar-alumno .boton-peligro {
+      min-height: 44px;
+      border-radius: var(--radio-control);
+      background: #a63d38;
+    }
+
+    .pagina-eliminar-alumno .boton-peligro:hover {
+      background: #87302d;
+    }
+
+    /* Generación e impresión de documentos */
+    .pagina-qr-alumno,
+    .pagina-qr-todos,
+    .pagina-pdf-alumnos {
+      padding: 28px;
+    }
+
+    .pagina-impresion,
+    .pagina-listado-pdf {
+      width: min(100%, 1120px);
+      margin: 0 auto;
+    }
+
+    .pagina-impresion .controles-impresion,
+    .pagina-pdf-alumnos .controles-pdf {
+      justify-content: flex-end;
+      margin: 0 auto 18px;
+      padding: 14px;
+      border: 1px solid #e0e8ec;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 4px 14px rgba(27, 55, 71, 0.04);
+    }
+
+    .pagina-impresion .controles-impresion .boton-principal,
+    .pagina-impresion .controles-impresion .boton-secundario,
+    .pagina-pdf-alumnos .controles-pdf .boton-principal,
+    .pagina-pdf-alumnos .controles-pdf .boton-secundario {
+      width: auto;
+      min-height: 42px;
+      margin: 0;
+      padding: 10px 15px;
+      text-decoration: none;
+    }
+
+    .pagina-impresion .cabecera-impresion,
+    .pagina-pdf-alumnos .estado-pdf {
+      margin: 0 auto 22px;
+      padding: clamp(20px, 3vw, 30px);
+      border: 1px solid #e0e8ec;
+      border-radius: var(--radio-tarjeta);
+      background: #fff;
+      box-shadow: var(--sombra-tarjeta);
+    }
+
+    .pagina-impresion .cabecera-impresion h1,
+    .pagina-pdf-alumnos .estado-pdf h1 {
+      color: #17384a;
+      font-size: clamp(24px, 3.5vw, 32px);
+      letter-spacing: -0.035em;
+    }
+
+    .pagina-impresion .cabecera-impresion p,
+    .pagina-pdf-alumnos .estado-pdf p {
+      color: var(--color-texto-suave);
+      line-height: 1.6;
+    }
+
+    .pagina-impresion .datos-cabecera-impresion {
+      margin-top: 16px;
+      color: #45606d;
+    }
+
+    .pagina-impresion .filtros-impresion {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid #e5ecef;
+    }
+
+    .pagina-impresion .filtros-impresion select {
+      min-height: 40px;
+      padding: 8px 10px;
+    }
+
+    .pagina-impresion .hoja-qr,
+    .pagina-pdf-alumnos .hoja-listado-pdf {
+      width: min(210mm, calc(100vw - 56px));
+      max-width: 100%;
+      height: auto;
+      min-height: 0;
+      aspect-ratio: 210 / 297;
+      margin: 22px auto;
+      box-shadow: 0 8px 28px rgba(27, 55, 71, 0.12);
+    }
+
+    .pagina-impresion .tarjeta-qr {
+      min-height: 0;
+      border-color: #c5d2d8;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .pagina-impresion .institucion-qr {
+      color: #294858;
+    }
+
+    .pagina-pdf-alumnos .estado-pdf {
+      text-align: left;
+    }
+
+    .pagina-pdf-alumnos .aviso-generacion {
+      max-width: none;
+      border-color: #d4e5ed;
+      background: #f2f8fb;
+      color: #355361;
+      line-height: 1.55;
+    }
+
+    .pagina-pdf-alumnos .progreso-generacion {
+      width: 100%;
+    }
+
+    .pagina-pdf-alumnos .encabezado-hoja-pdf {
+      border-color: #c6d3d9;
+    }
+
+    .pagina-pdf-alumnos .tarjeta-alumno-pdf {
+      border-color: #d5dfe4;
+      border-radius: 3px;
+    }
+
+    /* Administración de contenidos */
+    body.pagina-admin-contenido {
+      padding: clamp(20px, 4vw, 48px);
+    }
+
+    .admin-topbar,
+    .admin-contenido {
+      width: min(100%, 1160px);
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .admin-topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 26px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--color-borde);
+    }
+
+    .admin-topbar .etiqueta-panel,
+    .admin-seccion-titulo .etiqueta-seccion {
+      margin: 0 0 7px;
+      color: var(--color-primario);
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .admin-topbar h1 {
+      margin: 0;
+      color: #17384a;
+      font-size: clamp(28px, 4vw, 38px);
+      letter-spacing: -0.04em;
+    }
+
+    .admin-topbar p:last-child,
+    .admin-seccion-titulo > p:last-child {
+      margin: 8px 0 0;
+      color: var(--color-texto-suave);
+    }
+
+    .admin-topbar .boton-secundario {
+      flex: 0 0 auto;
+    }
+
+    .admin-contenido .tarjeta {
+      padding: clamp(20px, 3vw, 30px);
+    }
+
+    .admin-seccion-titulo {
+      margin-bottom: 22px;
+    }
+
+    .admin-seccion-titulo h2 {
+      margin: 0;
+      color: #203f50;
+      font-size: 21px;
+    }
+
+    .admin-seccion-titulo > p:last-child {
+      font-size: 13px;
+    }
+
+    .admin-campos {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px 20px;
+    }
+
+    .admin-campo-contenido {
+      grid-column: 1 / -1;
+    }
+
+    .admin-campos input,
+    .admin-campos select,
+    .admin-filtros input,
+    .admin-filtros select {
+      min-height: 44px;
+      padding: 10px 12px;
+    }
+
+    .admin-boton-guardar {
+      width: auto;
+      min-height: 44px;
+      margin-top: 20px;
+      padding: 10px 18px;
+    }
+
+    .admin-resultado {
+      min-height: 1.5em;
+      margin: 14px 0 0;
+      color: #355361;
+      font-size: 13px;
+    }
+
+    .admin-filtros {
+      display: grid;
+      grid-template-columns: minmax(220px, 2fr) minmax(160px, 1fr);
+      align-items: end;
+      gap: 16px;
+      padding: 16px;
+      border: 1px solid #e5ecef;
+      border-radius: 10px;
+      background: #f7f9fa;
+    }
+
+    .admin-filtros .campo {
+      margin: 0;
+    }
+
+    .lista-contenido-admin {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+      gap: 14px;
+    }
+
+    .recurso-admin {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid #e0e8ec;
+      border-radius: 11px;
+      background: #fff;
+      box-shadow: 0 3px 12px rgba(27, 55, 71, 0.045);
+    }
+
+    .recurso-admin > b {
+      display: inline-flex;
+      margin-bottom: 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #eaf5fc;
+      color: #075985;
+      font-size: 11px;
+      text-transform: capitalize;
+    }
+
+    .recurso-admin > p {
+      margin: 7px 0;
+      color: #536b77;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .recurso-admin iframe,
+    .recurso-admin img {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      max-height: 220px;
+      margin: 12px 0;
+      border: 0;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .recurso-admin audio {
+      width: 100%;
+      margin: 12px 0;
+    }
+
+    .recurso-admin .boton-peligro {
+      min-height: 38px;
+      margin-top: 8px;
+      padding: 8px 13px;
+      border-radius: 7px;
+      font-size: 13px;
+    }
+
+    /* Herramienta de almacenamiento */
+    body.pagina-prueba-storage {
+      width: min(100% - 32px, 680px);
+      margin: clamp(28px, 8vh, 80px) auto;
+      padding: clamp(22px, 4vw, 34px);
+      border: 1px solid #e0e8ec;
+      border-radius: var(--radio-tarjeta);
+      background: #fff;
+      box-shadow: var(--sombra-tarjeta);
+    }
+
+    .pagina-prueba-storage h2 {
+      margin-top: 0;
+      color: #17384a;
+    }
+
+    .pagina-prueba-storage input[type="file"] {
+      display: block;
+      width: 100%;
+      margin: 18px 0;
+      padding: 12px;
+      border: 1px dashed #b9c9d0;
+      border-radius: 9px;
+      background: #f7f9fa;
+    }
+
+    .pagina-prueba-storage button {
+      min-height: 42px;
+      padding: 10px 18px;
+      border: 0;
+      border-radius: var(--radio-control);
+      background: var(--color-primario);
+      color: #fff;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .pagina-prueba-storage button:hover {
+      background: var(--color-primario-oscuro);
+    }
+
+    .pagina-prueba-storage #resultado {
+      overflow-wrap: anywhere;
+    }
+}
+
+@media screen and (max-width: 760px) {
+    body.pagina-qr-alumno,
+    body.pagina-qr-todos,
+    body.pagina-pdf-alumnos {
+      padding: 18px;
+    }
+
+    .pagina-qr-alumno .controles-impresion,
+    .pagina-qr-todos .controles-impresion,
+    .pagina-pdf-alumnos .controles-pdf {
+      justify-content: stretch;
+    }
+
+    .pagina-qr-alumno .controles-impresion > *,
+    .pagina-qr-todos .controles-impresion > *,
+    .pagina-pdf-alumnos .controles-pdf > * {
+      flex: 1 1 145px;
+      text-align: center;
+    }
+
+    .pagina-impresion .hoja-qr,
+    .pagina-pdf-alumnos .hoja-listado-pdf {
+      width: calc(100vw - 36px);
+      margin: 16px auto;
+    }
+
+    .admin-contenido .admin-filtros {
+      grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 560px) {
+    body.pagina-editar-alumno,
+    body.pagina-eliminar-alumno {
+      padding: 18px 14px;
+    }
+
+    .pagina-editar-alumno .busqueda-edicion,
+    .pagina-eliminar-alumno .busqueda-edicion {
+      flex-direction: column;
+    }
+
+    .pagina-editar-alumno .boton-buscar,
+    .pagina-eliminar-alumno .boton-buscar {
+      width: 100%;
+    }
+
+    .pagina-editar-alumno .botones-edicion,
+    .pagina-eliminar-alumno .botones-edicion {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .pagina-eliminar-alumno .cabecera-edicion {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .pagina-eliminar-alumno .datos-alumno,
+    .pagina-editar-alumno .formulario,
+    .admin-campos {
+      grid-template-columns: 1fr;
+    }
+
+    .admin-campo-contenido {
+      grid-column: auto;
+    }
+
+    body.pagina-admin-contenido {
+      padding: 18px 14px;
+    }
+
+    .admin-topbar {
+      align-items: stretch;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .admin-topbar .boton-secundario {
+      align-self: flex-end;
+    }
+
+    .admin-boton-guardar {
+      width: 100%;
+    }
+
+    .pagina-pdf-alumnos .estado-pdf {
+      padding: 18px;
+    }
+
+    .pagina-impresion .datos-cabecera-impresion {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
 }
 
 

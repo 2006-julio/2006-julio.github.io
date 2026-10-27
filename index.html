@@ -6,46 +6,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sistema de registro</title>
+<meta name="theme-color" content="#f3f6f8">
+<meta name="description" content="Panel de administración y registro de estudiantes.">
+<title>Panel de administración | Sistema de registro</title>
 
 <link rel="stylesheet" href="style.css">
 
 </head>
 
-<body>
+<body class="inicio-administrativo">
 
 <div class="contenedor">
 
 <!-- ENCABEZADO -->
 
 <header class="encabezado">
-    <div>
+    <div class="encabezado-titulo">
+        <p class="etiqueta-panel">Administración escolar</p>
         <h1>Sistema de registro</h1>
-        <p>Registro y administración de estudiantes</p>
+        <p>Gestiona los alumnos, genera sus códigos QR y consulta los reportes.</p>
     </div>
 
-    <button
-        type="button"
-        id="btnCerrarSesion"
-        class="boton-secundario"
-    >
-        Cerrar sesión
-    </button>
+    <div class="acciones-panel">
+        <nav class="acciones-impresion-inicio" aria-label="Reportes e impresión">
+            <a
+                href="./imprimirqr_todoslosalumnos.html"
+                class="boton-principal boton-impresion-total"
+            >
+                Imprimir QR de todos los alumnos
+            </a>
 
-    <div class="acciones-impresion-inicio">
-        <a
-            href="./imprimirqr_todoslosalumnos.html"
-            class="boton-principal boton-impresion-total"
-        >
-            Imprimir QR de todos los alumnos
-        </a>
+            <a
+                href="./pdf_alumnos_por_grado.html"
+                class="boton-principal boton-impresion-total boton-pdf-alumnos"
+            >
+                PDF de alumnos por grado y sección
+            </a>
 
-        <a
-            href="./pdf_alumnos_por_grado.html"
-            class="boton-principal boton-impresion-total boton-pdf-alumnos"
+            <a
+                href="./reporte_tardanzas.html"
+                class="boton-principal boton-impresion-total boton-reporte-tardanzas"
+            >
+                Reporte de tardanzas
+            </a>
+        </nav>
+        <button
+            type="button"
+            id="btnCerrarSesion"
+            class="boton-secundario"
         >
-            PDF de alumnos por grado y sección
-        </a>
+            Cerrar sesión
+        </button>
     </div>
 </header>
 
@@ -54,7 +65,13 @@
 
 <section class="tarjeta">
 
-    <h2>Registrar alumno</h2>
+    <div class="seccion-encabezado">
+        <div>
+            <p class="etiqueta-seccion">Nuevo registro</p>
+            <h2>Registrar alumno</h2>
+            <p>Completa los datos del estudiante para agregarlo al sistema.</p>
+        </div>
+    </div>
 
     <div class="formulario">
 
@@ -150,7 +167,7 @@
 
 
     <button
-        class="boton-principal"
+        class="boton-principal boton-registrar"
         id="btnRegistrar"
     >
         Registrar estudiante
@@ -164,7 +181,7 @@
         class="boton-secundario boton-importar-excel"
         id="btnAbrirImportador"
     >
-        Importar desde Excel
+        Importar alumnos desde Excel
     </button>
 
 </section>
@@ -307,11 +324,13 @@
 
         <div>
 
+            <p class="etiqueta-seccion">Directorio</p>
             <h2>Alumnos registrados</h2>
 
             <p id="contador">
                 Cargando alumnos...
             </p>
+            <p class="ayuda-lista">Busca y administra la información de los estudiantes registrados.</p>
 
         </div>
 

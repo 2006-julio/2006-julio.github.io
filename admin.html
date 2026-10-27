@@ -2,89 +2,95 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Panel Administrador</title>
-<link rel="stylesheet" href="principal/admin.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f3f6f8">
+<title>Administración de contenido</title>
+<link rel="stylesheet" href="./style.css">
 </head>
-<body>
+<body class="pagina-admin-contenido">
 
-<h1>Panel Administrador</h1>
+<header class="admin-topbar">
+    <div>
+        <p class="etiqueta-panel">Administración escolar</p>
+        <h1>Gestión de contenido</h1>
+        <p>Administra los recursos educativos por tipo y grado.</p>
+    </div>
+    <button id="btnLogout" class="boton-secundario">
+        Cerrar sesión
+    </button>
+</header>
 
-<button id="btnLogout">
-    Cerrar sesión
-</button>
+<main class="admin-contenido">
+    <section class="tarjeta admin-formulario">
+        <div class="admin-seccion-titulo">
+            <p class="etiqueta-seccion">Biblioteca educativa</p>
+            <h2>Agregar contenido</h2>
+            <p>Completa la información para publicar un nuevo recurso.</p>
+        </div>
 
-<hr>
+        <div class="admin-campos">
+            <div class="campo">
+                <label for="tipo">Tipo de contenido</label>
+                <select id="tipo">
+                    <option value="video">Video</option>
+                    <option value="imagen">Imagen</option>
+                    <option value="audio">Audio</option>
+                    <option value="texto">Texto</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label for="titulo">Título</label>
+                <input type="text" id="titulo" placeholder="Ejemplo: Introducción a ciencias">
+            </div>
+            <div class="campo">
+                <label for="grado">Grado</label>
+                <input type="number" id="grado" placeholder="Selecciona del 1 al 5" min="1" max="5">
+            </div>
+            <div class="campo admin-campo-contenido">
+                <label for="contenido">Contenido o dirección web</label>
+                <input type="text" id="contenido" placeholder="Pega una URL o escribe el contenido">
+            </div>
+        </div>
+        <button id="btnGuardar" class="boton-principal admin-boton-guardar">
+            Guardar contenido
+        </button>
+        <p id="resultado" class="admin-resultado" role="status" aria-live="polite"></p>
+    </section>
 
-<h2>Agregar Contenido</h2>
+    <section class="tarjeta">
+        <div class="admin-seccion-titulo">
+            <p class="etiqueta-seccion">Explorar recursos</p>
+            <h2>Buscar contenido</h2>
+            <p>Filtra los recursos registrados por título o grado.</p>
+        </div>
+        <div class="admin-filtros">
+            <div class="campo">
+                <label for="buscar">Buscar por título</label>
+                <input type="text" id="buscar" placeholder="Escribe el título..." list="sugerencias">
+                <datalist id="sugerencias"></datalist>
+            </div>
+            <div class="campo">
+                <label for="filtroGrado">Grado</label>
+                <select id="filtroGrado">
+                    <option value="">Todos los grados</option>
+                    <option value="1">1°</option>
+                    <option value="2">2°</option>
+                    <option value="3">3°</option>
+                    <option value="4">4°</option>
+                    <option value="5">5°</option>
+                </select>
+            </div>
+        </div>
+    </section>
 
-<select id="tipo">
-    <option value="video">Video</option>
-    <option value="imagen">Imagen</option>
-    <option value="audio">Audio</option>
-    <option value="texto">Texto</option>
-</select>
-
-<br><br>
-
-<input
-    type="text"
-    id="titulo"
-    placeholder="Título">
-
-<br><br>
-
-<input
-    type="number"
-    id="grado"
-    placeholder="Grado">
-
-<br><br>
-
-<input
-    type="text"
-    id="contenido"
-    placeholder="URL o Texto">
-
-<br><br>
-
-<button id="btnGuardar">
-    Guardar
-</button>
-
-<hr>
-
-<div id="resultado"></div>
-
-<hr>
-<hr>
-
-<h2>Buscar Contenido</h2>
-
-<input
-    type="text"
-    id="buscar"
-    placeholder="Buscar por título..."
-    list="sugerencias">
-
-<datalist id="sugerencias"></datalist>
-
-<select id="filtroGrado">
-    <option value="">Todos los grados</option>
-    <option value="1">1°</option>
-    <option value="2">2°</option>
-    <option value="3">3°</option>
-    <option value="4">4°</option>
-    <option value="5">5°</option>
-</select>
-
-<hr>
-
-<h2>Contenido Registrado</h2>
-
-<div id="listaContenido"></div>
-
-
-<div id="listaContenido"></div>
+    <section class="tarjeta">
+        <div class="admin-seccion-titulo">
+            <p class="etiqueta-seccion">Recursos disponibles</p>
+            <h2>Contenido registrado</h2>
+        </div>
+        <div id="listaContenido" class="lista-contenido-admin"></div>
+    </section>
+</main>
 
 <script type="module">
 
@@ -136,23 +142,59 @@ document
 .getElementById("btnGuardar")
 .addEventListener("click", async () => {
 
+    const tipoSeleccionado = tipo.value;
+    const tituloIngresado = titulo.value.trim();
+    const gradoIngresado = grado.value.trim();
+    const contenidoIngresado = contenido.value.trim();
+
+    if (!["video", "imagen", "audio", "texto"].includes(tipoSeleccionado)) {
+        resultado.textContent = "Selecciona un tipo de contenido válido.";
+        return;
+    }
+
+    if (!tituloIngresado) {
+        resultado.textContent = "Ingresa un título.";
+        return;
+    }
+
+    const gradoNumerico = Number(gradoIngresado);
+    if (!gradoIngresado || !Number.isInteger(gradoNumerico) ||
+        gradoNumerico < 1 || gradoNumerico > 5) {
+        resultado.textContent = "Ingresa un grado válido del 1 al 5.";
+        return;
+    }
+
+    if (!contenidoIngresado) {
+        resultado.textContent = "Ingresa el contenido o la URL.";
+        return;
+    }
+
+    const urlContenido = tipoSeleccionado === "texto"
+        ? null
+        : obtenerUrlWeb(contenidoIngresado);
+
+    if (tipoSeleccionado !== "texto" && !urlContenido) {
+        resultado.textContent = "Ingresa una URL válida que comience con http:// o https://.";
+        return;
+    }
+
     try {
 
         const datos = {
 
-            tipo: tipo.value,
-            titulo: titulo.value,
-            grado: Number(grado.value)
+            tipo: tipoSeleccionado,
+            titulo: tituloIngresado,
+            grado: gradoNumerico
 
         };
 
-        if (tipo.value === "texto") {
+        if (tipoSeleccionado === "texto") {
 
-            datos.texto = contenido.value;
+            datos.texto = contenidoIngresado;
 
         } else {
 
-            datos.src = contenido.value;
+            datos.src = urlContenido;
 
         }
 
@@ -161,7 +203,7 @@ document
             datos
         );
 
-        resultado.innerHTML =
+        resultado.textContent =
             "Contenido guardado correctamente";
 
         titulo.value = "";
@@ -175,7 +217,7 @@ document
 
         console.error(error);
 
-        resultado.innerHTML =
+        resultado.textContent =
             error.message;
 
     }
@@ -183,14 +225,45 @@ document
 });
 
 function convertirYoutube(url) {
-    return url.replace("watch?v=", "embed/");
+    const urlSegura = obtenerUrlWeb(url);
+    if (!urlSegura) {
+        return null;
+    }
+
+    const direccion = new URL(urlSegura);
+    if (direccion.hostname === "www.youtube.com" ||
+        direccion.hostname === "youtube.com") {
+        const videoId = direccion.pathname === "/watch"
+            ? direccion.searchParams.get("v")
+            : null;
+        if (videoId) {
+            direccion.pathname = `/embed/${encodeURIComponent(videoId)}`;
+            direccion.search = "";
+            direccion.hash = "";
+        }
+    }
+
+    return direccion.href;
 }
+
+function obtenerUrlWeb(valor) {
+    try {
+        const direccion = new URL(valor);
+        if (direccion.protocol !== "http:" && direccion.protocol !== "https:") {
+            return null;
+        }
+        return direccion.href;
+    } catch {
+        return null;
+    }
+}
+
 function cargarSugerencias() {
 
     const datalist =
         document.getElementById("sugerencias");
 
-    datalist.innerHTML = "";
+    datalist.replaceChildren();
 
     const titulos = [
         ...new Set(
@@ -202,9 +275,7 @@ function cargarSugerencias() {
 
     titulos.forEach((titulo) => {
 
-        datalist.innerHTML += `
-            <option value="${titulo}">
-        `;
+        datalist.appendChild(new Option(String(titulo), String(titulo)));
 
     });
 
@@ -212,7 +283,7 @@ function cargarSugerencias() {
 
 function mostrarContenido() {
 
-    listaContenido.innerHTML = "";
+    listaContenido.replaceChildren();
 
     const textoBusqueda =
         buscar.value.toLowerCase();
@@ -224,14 +295,13 @@ function mostrarContenido() {
         contenidoGlobal.filter(item => {
 
             const coincideTitulo =
-                (item.titulo || "")
+                String(item.titulo || "")
                 .toLowerCase()
                 .includes(textoBusqueda);
 
             const coincideGrado =
                 gradoSeleccionado === "" ||
-                item.grado ==
-                gradoSeleccionado;
+                String(item.grado ?? "") === gradoSeleccionado;
 
             return coincideTitulo &&
                    coincideGrado;
@@ -240,83 +310,71 @@ function mostrarContenido() {
 
     filtrados.forEach((item) => {
 
-        let mediaHTML = "";
+        const tarjeta = document.createElement("article");
+        tarjeta.className = "recurso-admin";
+
+        const tipoContenido = document.createElement("b");
+        tipoContenido.textContent = String(item.tipo || "Contenido");
+        tarjeta.appendChild(tipoContenido);
+
+        const tituloContenido = document.createElement("p");
+        tituloContenido.textContent = String(item.titulo || "Sin título");
+        tarjeta.appendChild(tituloContenido);
+
+        const gradoContenido = document.createElement("p");
+        gradoContenido.textContent = `Grado: ${String(item.grado ?? "")}`;
+        tarjeta.appendChild(gradoContenido);
+
+        const url = obtenerUrlWeb(String(item.src || ""));
+        let medio;
 
         if (item.tipo === "video") {
-
-            mediaHTML = `
-                <iframe width="200" height="120"
-                    src="${convertirYoutube(item.src)}"
-                    frameborder="0"
-                    allowfullscreen>
-                </iframe>
-            `;
-
+            const urlVideo = convertirYoutube(String(item.src || ""));
+            if (urlVideo) {
+                medio = document.createElement("iframe");
+                medio.width = 200;
+                medio.height = 120;
+                medio.src = urlVideo;
+                medio.title = String(item.titulo || "Video");
+                medio.referrerPolicy = "no-referrer";
+                medio.allowFullscreen = true;
+            }
+        } else if (item.tipo === "imagen" && url) {
+            medio = document.createElement("img");
+            medio.src = url;
+            medio.width = 200;
+            medio.alt = String(item.titulo || "Imagen");
+        } else if (item.tipo === "audio" && url) {
+            medio = document.createElement("audio");
+            medio.controls = true;
+            const fuente = document.createElement("source");
+            fuente.src = url;
+            fuente.type = "audio/mpeg";
+            medio.appendChild(fuente);
+        } else if (item.tipo === "texto") {
+            medio = document.createElement("p");
+            medio.textContent = String(item.texto || "");
         }
 
-        if (item.tipo === "imagen") {
-
-            mediaHTML = `
-                <img src="${item.src}"
-                width="200">
-            `;
-
+        if (medio) {
+            tarjeta.appendChild(medio);
+        } else {
+            const mensaje = document.createElement("p");
+            mensaje.textContent = "No se puede mostrar este contenido o su URL no es válida.";
+            tarjeta.appendChild(mensaje);
         }
 
-        if (item.tipo === "audio") {
+        const idContenido = document.createElement("p");
+        idContenido.textContent = `ID: ${String(item.id || "")}`;
+        tarjeta.appendChild(idContenido);
 
-            mediaHTML = `
-                <audio controls>
-                    <source src="${item.src}"
-                    type="audio/mpeg">
-                </audio>
-            `;
+        const botonEliminar = document.createElement("button");
+        botonEliminar.textContent = "Eliminar";
+        botonEliminar.className = "boton-peligro";
+        botonEliminar.addEventListener("click", () => eliminarContenido(item.id));
+        tarjeta.appendChild(botonEliminar);
 
-        }
-
-        if (item.tipo === "texto") {
-
-            mediaHTML = `
-                <p>${item.texto}</p>
-            `;
-
-        }
-
-        listaContenido.innerHTML += `
-
-            <div style="
-                border:1px solid gray;
-                padding:10px;
-                margin:10px;
-            ">
-
-                <b>${item.tipo}</b>
-
-                <br>
-
-                ${item.titulo || "Sin título"}
-
-                <br>
-
-                Grado: ${item.grado}
-
-                <br><br>
-
-                ${mediaHTML}
-
-                <br>
-
-                ID: ${item.id}
-
-                <br><br>
-
-                <button onclick="eliminarContenido('${item.id}')">
-                    Eliminar
-                </button>
-
-            </div>
-
-        `;
+        listaContenido.appendChild(tarjeta);
 
     });
 
@@ -344,7 +402,7 @@ async function cargarContenido() {
     mostrarContenido();
 
 }
-window.eliminarContenido = async (id) => {
+async function eliminarContenido(id) {
 
     const confirmar = confirm(
         "¿Desea eliminar este contenido?"
@@ -373,7 +431,7 @@ window.eliminarContenido = async (id) => {
 
     }
 
-};
+}
 
 cargarContenido();
 buscar.addEventListener(
