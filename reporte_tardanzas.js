@@ -106,18 +106,32 @@ function obtenerRegistrosFiltrados() {
 function actualizarReporte() {
   const registros = obtenerRegistrosFiltrados();
   const grupos = agruparPorGradoSeccion(registros);
-  const alumnos = new Set(registros.map((registro) => texto(registro.alumnoId) || nombreAlumno(registro)));
+  const conteoPorAlumno = contarRegistrosPorAlumno(tardanzas);
+  const totalAlumnosFiltrados = new Set(registros.map(claveAlumno)).size;
 
   document.getElementById("totalRegistros").textContent = registros.length.toLocaleString("es-PE");
-  document.getElementById("totalAlumnos").textContent = alumnos.size.toLocaleString("es-PE");
+  document.getElementById("totalAlumnos").textContent = totalAlumnosFiltrados.toLocaleString("es-PE");
   document.getElementById("totalGrupos").textContent = grupos.length.toLocaleString("es-PE");
   document.getElementById("resumenDetalle").textContent = registros.length
-    ? `Se muestran ${registros.length} registro(s) en ${grupos.length} grupo(s).`
+    ? `Se muestran ${registros.length} registro(s) en ${grupos.length} grupo(s). “N° Tardanza” indica el total de registros del alumno en el sistema.`
     : "No hay registros que coincidan con los filtros seleccionados.";
 
-  renderizarGrupos(grupos);
+  renderizarGrupos(grupos, conteoPorAlumno);
   renderizarGraficos(registros, grupos);
   btnDescargar.disabled = registros.length === 0;
+}
+
+function contarRegistrosPorAlumno(registros) {
+  const conteos = new Map();
+  registros.forEach((registro) => {
+    const clave = claveAlumno(registro);
+    conteos.set(clave, (conteos.get(clave) || 0) + 1);
+  });
+  return conteos;
+}
+
+function claveAlumno(registro) {
+  return texto(registro.alumnoId) || nombreAlumno(registro);
 }
 
 function agruparPorGradoSeccion(registros) {
@@ -138,7 +152,7 @@ function agruparPorGradoSeccion(registros) {
   });
 }
 
-function renderizarGrupos(grupos) {
+function renderizarGrupos(grupos, conteoPorAlumno) {
   detalleGrupos.replaceChildren();
   grupos.forEach((grupo) => {
     const seccion = document.createElement("section");
@@ -146,20 +160,21 @@ function renderizarGrupos(grupos) {
     const titulo = document.createElement("h3");
     titulo.textContent = `${grupo.grado} - Sección ${grupo.seccion}`;
     const resumen = document.createElement("p");
-    const alumnos = new Set(grupo.registros.map((registro) => texto(registro.alumnoId) || nombreAlumno(registro)));
+    const alumnos = new Set(grupo.registros.map(claveAlumno));
     resumen.textContent = `${grupo.registros.length} tardanza(s) | ${alumnos.size} alumno(s)`;
 
     const contenedorTabla = document.createElement("div");
     contenedorTabla.className = "tabla-reporte";
     const tabla = document.createElement("table");
     tabla.innerHTML = `<thead><tr>
-      <th>Alumno</th><th>Fecha y hora</th><th>Auxiliar</th><th>Apoderado</th><th>Escaneo</th>
+      <th>Alumno</th><th>N° Tardanza</th><th>Fecha y hora</th><th>Auxiliar</th><th>Apoderado</th><th>Escaneo</th>
     </tr></thead>`;
     const cuerpo = document.createElement("tbody");
     grupo.registros.forEach((registro) => {
       const fila = document.createElement("tr");
       const escaneo = formatearFechaHora(registro.fechaHoraEscaneo);
       fila.innerHTML = `<td>${escaparHTML(nombreAlumno(registro))}</td>
+        <td>${conteoPorAlumno.get(claveAlumno(registro))}</td>
         <td>${escaparHTML(formatearFecha(obtenerFecha(registro)))}<span class="dato-secundario">${escaparHTML(texto(registro.hora) || "Sin hora")}</span></td>
         <td>${escaparHTML(texto(registro.auxiliarNombre) || "Sin auxiliar")}</td>
         <td>${escaparHTML(texto(registro.telefonoApoderado) || "Sin número registrado")}</td>
@@ -246,10 +261,11 @@ async function descargarPdf() {
   try {
     const jsPDF = await cargarDependenciasPdf();
     const grupos = agruparPorGradoSeccion(registros);
+    const conteoPorAlumno = contarRegistrosPorAlumno(tardanzas);
     const pdf = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
 
     const ancho = pdf.internal.pageSize.getWidth();
-    const totalAlumnos = new Set(registros.map((registro) => texto(registro.alumnoId) || nombreAlumno(registro))).size;
+    const totalAlumnos = new Set(registros.map(claveAlumno)).size;
     pdf.setFont("helvetica", "bold");
     pdf.setFontSize(18);
     pdf.text("Reporte detallado de tardanzas", 36, 38);
@@ -281,9 +297,10 @@ async function descargarPdf() {
       pdf.autoTable({
         startY: inicioTabla + 7,
         margin: { left: 36, right: 36 },
-        head: [["Alumno", "Grado / sección", "Fecha / hora", "Auxiliar", "Teléfono apoderado", "Escaneo"]],
+        head: [["Alumno", "N° Tardanza", "Grado / sección", "Fecha / hora", "Auxiliar", "Teléfono apoderado", "Escaneo"]],
         body: grupo.registros.map((registro) => [
           nombreAlumno(registro),
+          conteoPorAlumno.get(claveAlumno(registro)),
           `${texto(registro.grado) || "Sin grado"} / ${texto(registro.seccion) || "Sin sección"}`,
           `${formatearFecha(obtenerFecha(registro))} ${texto(registro.hora) || ""}`,
           texto(registro.auxiliarNombre) || "Sin auxiliar",
@@ -294,11 +311,12 @@ async function descargarPdf() {
         headStyles: { fillColor: [30, 64, 81] },
         columnStyles: {
           0: { cellWidth: 130 },
-          1: { cellWidth: 95 },
-          2: { cellWidth: 90 },
-          3: { cellWidth: 100 },
-          4: { cellWidth: 115 },
-          5: { cellWidth: "auto" }
+          1: { cellWidth: 65 },
+          2: { cellWidth: 95 },
+          3: { cellWidth: 90 },
+          4: { cellWidth: 100 },
+          5: { cellWidth: 115 },
+          6: { cellWidth: "auto" }
         },
         didDrawPage: () => {
           pdf.setFontSize(8);
