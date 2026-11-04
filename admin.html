@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f3f6f8">
+<title>Administración de contenido</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body class="pagina-admin-contenido">
+
+<header class="admin-topbar">
+    <div>
+        <p class="etiqueta-panel">Administración escolar</p>
+        <h1>Gestión de contenido</h1>
+        <p>Administra los recursos educativos por tipo y grado.</p>
+    </div>
+    <button id="btnLogout" class="boton-secundario">
+        Cerrar sesión
+    </button>
+</header>
+
+<main class="admin-contenido">
+    <section class="tarjeta admin-formulario">
+        <div class="admin-seccion-titulo">
+            <p class="etiqueta-seccion">Biblioteca educativa</p>
+            <h2>Agregar contenido</h2>
+            <p>Completa la información para publicar un nuevo recurso.</p>
+        </div>
+
+        <div class="admin-campos">
+            <div class="campo">
+                <label for="tipo">Tipo de contenido</label>
+                <select id="tipo">
+                    <option value="video">Video</option>
+                    <option value="imagen">Imagen</option>
+                    <option value="audio">Audio</option>
+                    <option value="texto">Texto</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label for="titulo">Título</label>
+                <input type="text" id="titulo" placeholder="Ejemplo: Introducción a ciencias">
+            </div>
+            <div class="campo">
+                <label for="grado">Grado</label>
+                <input type="number" id="grado" placeholder="Selecciona del 1 al 5" min="1" max="5">
+            </div>
+            <div class="campo admin-campo-contenido">
+                <label for="contenido">Contenido o dirección web</label>
+                <input type="text" id="contenido" placeholder="Pega una URL o escribe el contenido">
+            </div>
+        </div>
+        <button id="btnGuardar" class="boton-principal admin-boton-guardar">
+            Guardar contenido
+        </button>
+        <p id="resultado" class="admin-resultado" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="tarjeta">
+        <div class="admin-seccion-titulo">
+            <p class="etiqueta-seccion">Explorar recursos</p>
+            <h2>Buscar contenido</h2>
+            <p>Filtra los recursos registrados por título o grado.</p>
+        </div>
+        <div class="admin-filtros">
+            <div class="campo">
+                <label for="buscar">Buscar por título</label>
+                <input type="text" id="buscar" placeholder="Escribe el título..." list="sugerencias">
+                <datalist id="sugerencias"></datalist>
+            </div>
+            <div class="campo">
+                <label for="filtroGrado">Grado</label>
+                <select id="filtroGrado">
+                    <option value="">Todos los grados</option>
+                    <option value="1">1°</option>
+                    <option value="2">2°</option>
+                    <option value="3">3°</option>
+                    <option value="4">4°</option>
+                    <option value="5">5°</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <section class="tarjeta">
+        <div class="admin-seccion-titulo">
+            <p class="etiqueta-seccion">Recursos disponibles</p>
+            <h2>Contenido registrado</h2>
+        </div>
+        <div id="listaContenido" class="lista-contenido-admin"></div>
+    </section>
+</main>
+
+<script type="module">
+
+import { db, auth } from "./config-firebase.js";
+
+import {
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    doc
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+const tipo = document.getElementById("tipo");
+const titulo = document.getElementById("titulo");
+const grado = document.getElementById("grado");
+const contenido = document.getElementById("contenido");
+const resultado = document.getElementById("resultado");
+const listaContenido = document.getElementById("listaContenido");
+const buscar = document.getElementById("buscar");
+const filtroGrado = document.getElementById("filtroGrado");
+
+let contenidoGlobal = [];
+
+onAuthStateChanged(auth, (user) => {
+
+    if (!user) {
+
+        window.location.href = "login.html";
+
+    }
+
+});
+
+document
+.getElementById("btnLogout")
+.addEventListener("click", async () => {
+
+    await signOut(auth);
+
+});
+
+document
+.getElementById("btnGuardar")
+.addEventListener("click", async () => {
+
+    const tipoSeleccionado = tipo.value;
+    const tituloIngresado = titulo.value.trim();
+    const gradoIngresado = grado.value.trim();
+    const contenidoIngresado = contenido.value.trim();
+
+    if (!["video", "imagen", "audio", "texto"].includes(tipoSeleccionado)) {
+        resultado.textContent = "Selecciona un tipo de contenido válido.";
+        return;
+    }
+
+    if (!tituloIngresado) {
+        resultado.textContent = "Ingresa un título.";
+        return;
+    }
+
+    const gradoNumerico = Number(gradoIngresado);
+    if (!gradoIngresado || !Number.isInteger(gradoNumerico) ||
+        gradoNumerico < 1 || gradoNumerico > 5) {
+        resultado.textContent = "Ingresa un grado válido del 1 al 5.";
+        return;
+    }
+
+    if (!contenidoIngresado) {
+        resultado.textContent = "Ingresa el contenido o la URL.";
+        return;
+    }
+
+    const urlContenido = tipoSeleccionado === "texto"
+        ? null
+        : obtenerUrlWeb(contenidoIngresado);
+
+    if (tipoSeleccionado !== "texto" && !urlContenido) {
+        resultado.textContent = "Ingresa una URL válida que comience con http:// o https://.";
+        return;
+    }
+
+    try {
+
+        const datos = {
+
+            tipo: tipoSeleccionado,
+            titulo: tituloIngresado,
+            grado: gradoNumerico
+
+        };
+
+        if (tipoSeleccionado === "texto") {
+
+            datos.texto = contenidoIngresado;
+
+        } else {
+
+            datos.src = urlContenido;
+
+        }
+
+        await addDoc(
+            collection(db, "contenido"),
+            datos
+        );
+
+        resultado.textContent =
+            "Contenido guardado correctamente";
+
+        titulo.value = "";
+        grado.value = "";
+        contenido.value = "";
+
+        cargarContenido();
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        resultado.textContent =
+            error.message;
+
+    }
+
+});
+
+function convertirYoutube(url) {
+    const urlSegura = obtenerUrlWeb(url);
+    if (!urlSegura) {
+        return null;
+    }
+
+    const direccion = new URL(urlSegura);
+    if (direccion.hostname === "www.youtube.com" ||
+        direccion.hostname === "youtube.com") {
+        const videoId = direccion.pathname === "/watch"
+            ? direccion.searchParams.get("v")
+            : null;
+        if (videoId) {
+            direccion.pathname = `/embed/${encodeURIComponent(videoId)}`;
+            direccion.search = "";
+            direccion.hash = "";
+        }
+    }
+
+    return direccion.href;
+}
+
+function obtenerUrlWeb(valor) {
+    try {
+        const direccion = new URL(valor);
+        if (direccion.protocol !== "http:" && direccion.protocol !== "https:") {
+            return null;
+        }
+        return direccion.href;
+    } catch {
+        return null;
+    }
+}
+
+function cargarSugerencias() {
+
+    const datalist =
+        document.getElementById("sugerencias");
+
+    datalist.replaceChildren();
+
+    const titulos = [
+        ...new Set(
+            contenidoGlobal
+            .map(item => item.titulo)
+            .filter(Boolean)
+        )
+    ];
+
+    titulos.forEach((titulo) => {
+
+        datalist.appendChild(new Option(String(titulo), String(titulo)));
+
+    });
+
+}
+
+function mostrarContenido() {
+
+    listaContenido.replaceChildren();
+
+    const textoBusqueda =
+        buscar.value.toLowerCase();
+
+    const gradoSeleccionado =
+        filtroGrado.value;
+
+    const filtrados =
+        contenidoGlobal.filter(item => {
+
+            const coincideTitulo =
+                String(item.titulo || "")
+                .toLowerCase()
+                .includes(textoBusqueda);
+
+            const coincideGrado =
+                gradoSeleccionado === "" ||
+                String(item.grado ?? "") === gradoSeleccionado;
+
+            return coincideTitulo &&
+                   coincideGrado;
+
+        });
+
+    filtrados.forEach((item) => {
+
+        const tarjeta = document.createElement("article");
+        tarjeta.className = "recurso-admin";
+
+        const tipoContenido = document.createElement("b");
+        tipoContenido.textContent = String(item.tipo || "Contenido");
+        tarjeta.appendChild(tipoContenido);
+
+        const tituloContenido = document.createElement("p");
+        tituloContenido.textContent = String(item.titulo || "Sin título");
+        tarjeta.appendChild(tituloContenido);
+
+        const gradoContenido = document.createElement("p");
+        gradoContenido.textContent = `Grado: ${String(item.grado ?? "")}`;
+        tarjeta.appendChild(gradoContenido);
+
+        const url = obtenerUrlWeb(String(item.src || ""));
+        let medio;
+
+        if (item.tipo === "video") {
+            const urlVideo = convertirYoutube(String(item.src || ""));
+            if (urlVideo) {
+                medio = document.createElement("iframe");
+                medio.width = 200;
+                medio.height = 120;
+                medio.src = urlVideo;
+                medio.title = String(item.titulo || "Video");
+                medio.referrerPolicy = "no-referrer";
+                medio.allowFullscreen = true;
+            }
+        } else if (item.tipo === "imagen" && url) {
+            medio = document.createElement("img");
+            medio.src = url;
+            medio.width = 200;
+            medio.alt = String(item.titulo || "Imagen");
+        } else if (item.tipo === "audio" && url) {
+            medio = document.createElement("audio");
+            medio.controls = true;
+            const fuente = document.createElement("source");
+            fuente.src = url;
+            fuente.type = "audio/mpeg";
+            medio.appendChild(fuente);
+        } else if (item.tipo === "texto") {
+            medio = document.createElement("p");
+            medio.textContent = String(item.texto || "");
+        }
+
+        if (medio) {
+            tarjeta.appendChild(medio);
+        } else {
+            const mensaje = document.createElement("p");
+            mensaje.textContent = "No se puede mostrar este contenido o su URL no es válida.";
+            tarjeta.appendChild(mensaje);
+        }
+
+        const idContenido = document.createElement("p");
+        idContenido.textContent = `ID: ${String(item.id || "")}`;
+        tarjeta.appendChild(idContenido);
+
+        const botonEliminar = document.createElement("button");
+        botonEliminar.textContent = "Eliminar";
+        botonEliminar.className = "boton-peligro";
+        botonEliminar.addEventListener("click", () => eliminarContenido(item.id));
+        tarjeta.appendChild(botonEliminar);
+
+        listaContenido.appendChild(tarjeta);
+
+    });
+
+}
+
+async function cargarContenido() {
+
+    const querySnapshot = await getDocs(
+        collection(db, "contenido")
+    );
+
+    contenidoGlobal = [];
+
+    querySnapshot.forEach((documento) => {
+
+        contenidoGlobal.push({
+            id: documento.id,
+            ...documento.data()
+        });
+
+    });
+
+    cargarSugerencias();
+
+    mostrarContenido();
+
+}
+async function eliminarContenido(id) {
+
+    const confirmar = confirm(
+        "¿Desea eliminar este contenido?"
+    );
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+    try {
+
+        await deleteDoc(
+            doc(db, "contenido", id)
+        );
+
+        cargarContenido();
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        alert(error.message);
+
+    }
+
+}
+
+cargarContenido();
+buscar.addEventListener(
+    "input",
+    mostrarContenido
+);
+
+filtroGrado.addEventListener(
+    "change",
+    mostrarContenido
+);
+</script>
+
+</body>
+</html>

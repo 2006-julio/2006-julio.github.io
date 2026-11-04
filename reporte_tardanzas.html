@@ -18,8 +18,14 @@
       <div class="acciones-reporte">
         <a href="./index.html" class="boton-secundario">Volver</a>
         <button type="button" id="btnActualizarReporte" class="boton-secundario">Actualizar datos</button>
+        <button type="button" id="btnVistaCompacta" class="boton-secundario" aria-pressed="false">
+          Vista compacta
+        </button>
         <button type="button" id="btnDescargarReporte" class="boton-principal boton-reporte-tardanzas" disabled>
           Descargar reporte PDF
+        </button>
+        <button type="button" id="btnDescargarExcel" class="boton-principal boton-excel" disabled>
+          Descargar reporte Excel
         </button>
       </div>
     </header>
@@ -76,6 +82,26 @@
       </article>
     </section>
 
+    <section class="tarjeta seccion-reiterativas" aria-labelledby="tituloReiterativas">
+      <h2 id="tituloReiterativas">TARDANZAS REITERATIVAS</h2>
+      <div class="filtro-reiterativas no-imprimir">
+        <label for="filtroPeriodoReiterativas">Contar tardanzas de</label>
+        <select id="filtroPeriodoReiterativas">
+          <option value="todos">Todos los registros</option>
+          <option value="periodo">Período seleccionado (Desde y Hasta)</option>
+        </select>
+        <label for="vistaRegistrosReiterativas">Mostrar</label>
+        <select id="vistaRegistrosReiterativas">
+          <option value="todos">Todos sus registros</option>
+          <option value="reciente">Solo el más reciente</option>
+        </select>
+      </div>
+      <p id="descripcionReiterativas" class="descripcion-reiterativas">
+        Estudiantes con 3 o más tardanzas en todo el historial. Los filtros de grado y sección se aplican a esta lista.
+      </p>
+      <div id="estudiantesReiterativos"></div>
+    </section>
+
     <section class="tarjeta">
       <h2>Detalle por grado y sección</h2>
       <p id="resumenDetalle">No hay datos para mostrar.</p>
@@ -84,6 +110,8 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
   <script type="module" src="./reporte_tardanzas.js"></script>
